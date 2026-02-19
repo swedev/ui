@@ -1,10 +1,12 @@
+> **English version:** [README.en.md](README.en.md)
+
 # @swedev/ui
 
-Shared, themeable UI component library for swedev projects (Styrla, OpenVera, Timla).
+Delat, theme-bart komponentbibliotek for swedev-projekt (Styrla, OpenVera, Timla).
 
-Built on Radix Themes with semantic wrappers, Lucide React icons, and Tailwind CSS.
+Byggt pa Radix Themes med semantiska wrappers, Lucide React-ikoner och Tailwind CSS.
 
-## Install
+## Installera
 
 ```bash
 npm install @swedev/ui
@@ -16,7 +18,7 @@ Peer dependencies:
 npm install react react-dom @radix-ui/themes lucide-react
 ```
 
-## Usage
+## Anvandning
 
 ```tsx
 import { Button, Badge, Callout } from "@swedev/ui";
@@ -26,67 +28,67 @@ import "@radix-ui/themes/styles.css";
 function App() {
   return (
     <Theme accentColor="teal" grayColor="slate">
-      <Callout semantic="info" title="Welcome" message="Getting started." />
-      <Badge semantic="success">Active</Badge>
-      <Button semantic="action" icon={Save}>Save</Button>
+      <Callout semantic="info" title="Valkomna" message="Kom igang." />
+      <Badge semantic="success">Aktiv</Badge>
+      <Button semantic="action" icon={Save}>Spara</Button>
     </Theme>
   );
 }
 ```
 
-## Semantic props
+## Semantiska props
 
-Components accept `semantic` instead of `color` for consistent meaning across the UI:
+Komponenter tar `semantic` istallet for `color` for konsekvent betydelse i hela UI:t:
 
 `action` · `destructive` · `neutral` · `info` · `success` · `warning` · `error` · `danger` · `pending` · `valid` · `invalid`
 
 ```tsx
-<Badge semantic="success">Paid</Badge>
-<Badge semantic="warning">Overdue</Badge>
-<Badge semantic="pending">Waitlist</Badge>
+<Badge semantic="success">Betald</Badge>
+<Badge semantic="warning">Forsenad</Badge>
+<Badge semantic="pending">Vantelista</Badge>
 ```
 
-## Components
+## Komponenter
 
-| Component | Base | Semantic |
-|-----------|------|----------|
-| Badge | Radix Badge | yes |
-| Button | Radix Button | yes |
-| Callout | Radix Callout | yes |
-| Checkbox | Radix Checkbox | yes |
+| Komponent | Bas | Semantic |
+|-----------|-----|----------|
+| Badge | Radix Badge | ja |
+| Button | Radix Button | ja |
+| Callout | Radix Callout | ja |
+| Checkbox | Radix Checkbox | ja |
 | DatePicker | Radix Popover + custom | - |
 | Dropdown | Radix DropdownMenu | per item |
 | Pagination | Custom | - |
-| ProgressBar | Radix Progress | yes |
+| ProgressBar | Radix Progress | ja |
 | Select | Radix Select | - |
-| Slider | Radix Slider | yes |
-| Switch | Radix Switch | yes |
+| Slider | Radix Slider | ja |
+| Switch | Radix Switch | ja |
 | Table | Radix Table | - |
-| TextArea | Radix TextArea | yes |
-| TextField | Radix TextField | yes |
+| TextArea | Radix TextArea | ja |
+| TextField | Radix TextField | ja |
 | ToggleButton | Radix SegmentedControl | - |
 
 ## Storybook
 
 ```bash
-npm run dev       # Start Storybook on port 6006
-npm run build     # Build package (tsup + tailwind)
+npm run dev       # Starta Storybook pa port 6006
+npm run build     # Bygg paketet (tsup + tailwind)
 ```
 
 ## Theming
 
-Wrap your app in Radix `<Theme>` to set branding per deployment:
+Wrappa din app i Radix `<Theme>` for att satta branding per deployment:
 
 ```tsx
 import { Theme } from "@radix-ui/themes";
 
 <Theme accentColor="teal" grayColor="slate">
-  {/* All components inherit the theme */}
+  {/* Alla komponenter arver temat */}
 </Theme>
 ```
 
-This enables per-organization branding — each association or company sees a consistent UI in their own colors.
+Detta gor det mojligt att brand:a per organisation — varje forening eller foretag ser ett enhetligt UI i sina egna farger.
 
-## License
+## Licens
 
 MIT
