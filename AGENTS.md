@@ -1,6 +1,6 @@
 # @swedev/ui — Agent Guide
 
-Shared UI component library. Radix Themes + semantic wrappers + Lucide icons + Tailwind CSS 4.
+Shared UI component library. Radix Themes + semantic wrappers + Lucide icons.
 
 ## Architecture
 
@@ -50,7 +50,6 @@ Callout auto-selects a default icon based on `semantic` via `getDefaultIconForSe
 ## Build
 
 - **tsup** — ESM + CJS + .d.ts, externals: react, react-dom, @radix-ui/themes, lucide-react
-- **Tailwind CLI** — builds `dist/styles.css` from `src/styles/tailwind.css`
 - **Storybook 10** — Vite-based, stories colocated with components
 
 ## Dependencies
@@ -65,7 +64,7 @@ All UI deps are **peer dependencies** — the consuming project provides them:
 ## Commands
 
 ```bash
-npm run build          # tsup + tailwind → dist/
+npm run build          # tsup → dist/
 npm run dev            # Storybook on port 6006
 npm run build-storybook # Static Storybook build
 npm test               # vitest

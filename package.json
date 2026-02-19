@@ -11,16 +11,14 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./styles.css": "./dist/styles.css"
+    }
   },
   "files": [
     "dist"
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsup && npm run build:css",
-    "build:css": "tailwindcss -i src/styles/tailwind.css -o dist/styles.css --minify",
+    "build": "tsup",
     "dev": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "vitest run",
@@ -43,9 +41,6 @@
     "@storybook/react-vite": "^10",
     "@storybook/addon-docs": "^10",
     "storybook": "^10",
-    "tailwindcss": "^4",
-    "@tailwindcss/cli": "^4",
-    "@tailwindcss/vite": "^4",
     "@types/react": "^19",
     "@types/react-dom": "^19"
   },
