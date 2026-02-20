@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Copy, Edit, Trash2, Share, Download } from "lucide-react";
+import { Copy, Edit, Trash2, Share, Download, MoreHorizontal } from "lucide-react";
 import { Button } from "../Button";
 import { Dropdown } from "./Dropdown";
 
@@ -14,9 +14,7 @@ export const Default: Story = {
   render: () => (
     <Dropdown.Root>
       <Dropdown.Trigger>
-        <Button semantic="action" variant="soft">
-          Actions
-        </Button>
+        <Button semantic="action" variant="soft" text="Actions" />
       </Dropdown.Trigger>
       <Dropdown.Content>
         <Dropdown.Item icon={Edit}>Edit</Dropdown.Item>
@@ -32,13 +30,26 @@ export const Default: Story = {
   ),
 };
 
+export const ActionDropdown: Story = {
+  render: () => (
+    <Dropdown.ActionDropdown
+      items={[
+        { key: "edit", text: "Edit", icon: Edit },
+        { key: "copy", text: "Duplicate", icon: Copy },
+        { key: "delete", text: "Delete", icon: Trash2 },
+      ]}
+      onSelect={(key) => console.log("Selected:", key)}
+    >
+      <Button semantic="action" icon={MoreHorizontal} text="Actions" />
+    </Dropdown.ActionDropdown>
+  ),
+};
+
 export const WithLabels: Story = {
   render: () => (
     <Dropdown.Root>
       <Dropdown.Trigger>
-        <Button semantic="neutral" variant="outline">
-          Options
-        </Button>
+        <Button semantic="neutral" variant="outline" text="Options" />
       </Dropdown.Trigger>
       <Dropdown.Content>
         <Dropdown.Label>Document</Dropdown.Label>
@@ -49,6 +60,27 @@ export const WithLabels: Story = {
         <Dropdown.Item icon={Trash2} semantic="destructive">
           Delete
         </Dropdown.Item>
+      </Dropdown.Content>
+    </Dropdown.Root>
+  ),
+};
+
+export const WithSubmenu: Story = {
+  render: () => (
+    <Dropdown.Root>
+      <Dropdown.Trigger>
+        <Button semantic="neutral" text="Options" />
+      </Dropdown.Trigger>
+      <Dropdown.Content>
+        <Dropdown.Item>Profile</Dropdown.Item>
+        <Dropdown.Item>Settings</Dropdown.Item>
+        <Dropdown.Sub>
+          <Dropdown.SubTrigger>More</Dropdown.SubTrigger>
+          <Dropdown.SubContent>
+            <Dropdown.Item icon={Download}>Export</Dropdown.Item>
+            <Dropdown.Item>Archive</Dropdown.Item>
+          </Dropdown.SubContent>
+        </Dropdown.Sub>
       </Dropdown.Content>
     </Dropdown.Root>
   ),

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Table } from "./Table";
+import { Badge } from "../Badge";
 
 const meta: Meta = {
   title: "Components/Table",
@@ -9,8 +10,8 @@ export default meta;
 type Story = StoryObj;
 
 const sampleData = [
-  { name: "Karin Svensson", role: "Ordforande", status: "Aktiv" },
-  { name: "Erik Lindberg", role: "Kassor", status: "Aktiv" },
+  { name: "Karin Svensson", role: "Ordförande", status: "Aktiv" },
+  { name: "Erik Lindberg", role: "Kassör", status: "Aktiv" },
   { name: "Anna Holm", role: "Sekreterare", status: "Aktiv" },
   { name: "Lars Pettersson", role: "Ledamot", status: "Inaktiv" },
   { name: "Maria Johansson", role: "Ledamot", status: "Aktiv" },
@@ -65,8 +66,6 @@ export const Striped: Story = {
 export const WithBadges: Story = {
   name: "Combined with Badge",
   render: () => {
-    // Import inline to avoid circular dependency in stories
-    const { Badge } = require("../Badge");
     return (
       <Table.Root>
         <Table.Header>
@@ -85,13 +84,13 @@ export const WithBadges: Story = {
           <Table.Row>
             <Table.RowHeaderCell>Erik Lindberg</Table.RowHeaderCell>
             <Table.Cell>
-              <Badge semantic="warning">Forsenad</Badge>
+              <Badge semantic="warning">Försenad</Badge>
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.RowHeaderCell>Lars Pettersson</Table.RowHeaderCell>
             <Table.Cell>
-              <Badge semantic="pending">Vantar</Badge>
+              <Badge semantic="pending">Väntar</Badge>
             </Table.Cell>
           </Table.Row>
         </Table.Body>

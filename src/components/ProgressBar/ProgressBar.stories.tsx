@@ -11,6 +11,7 @@ const meta: Meta<typeof ProgressBar> = {
       options: ["action", "info", "success", "warning", "error", "pending"],
     },
     size: { control: "select", options: ["1", "2", "3"] },
+    showText: { control: "boolean" },
   },
 };
 
@@ -25,13 +26,17 @@ export const Complete: Story = {
   args: { value: 100, semantic: "success" },
 };
 
-export const Low: Story = {
-  args: { value: 15, semantic: "error" },
+export const WithText: Story = {
+  args: { value: 75, semantic: "action", showText: true },
+};
+
+export const CustomText: Story = {
+  args: { value: 42, semantic: "info", showText: true, text: "42 of 100 items" },
 };
 
 export const AllSemantics: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+    <div className="flex flex-col gap-3">
       <ProgressBar semantic="action" value={80} />
       <ProgressBar semantic="info" value={60} />
       <ProgressBar semantic="success" value={100} />

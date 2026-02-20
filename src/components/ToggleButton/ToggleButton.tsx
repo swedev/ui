@@ -1,31 +1,40 @@
 import React from "react";
-import { SegmentedControl } from "@radix-ui/themes";
-import type { ComponentProps } from "react";
+import type { ButtonProps } from "../Button/Button";
+import { Button } from "../Button/Button";
+import { cn } from "../../utils";
+import s from "./ToggleButton.module.css";
 
-type RadixSegmentedControlRootProps = ComponentProps<
-  typeof SegmentedControl.Root
->;
+export type ToggleButtonProps = ButtonProps & {
+  active?: boolean;
+  activeProps?: Partial<ButtonProps>;
+};
 
-export interface ToggleOption {
-  value: string;
-  label: string;
-}
-
-export interface ToggleButtonProps extends RadixSegmentedControlRootProps {
-  options: ToggleOption[];
-}
+const defaultActiveProps: Partial<ButtonProps> = { variant: "solid" };
 
 export const ToggleButton: React.FC<ToggleButtonProps> = ({
-  options,
-  ...rest
+  active = false,
+  activeProps,
+  className,
+  variant = "surface",
+  ...restProps
 }) => {
+  const mergedActiveProps = { ...defaultActiveProps, ...activeProps };
+
+  const mergedProps = (active
+    ? { variant, ...restProps, ...mergedActiveProps }
+    : { variant, ...restProps }) as ButtonProps;
+
+  const mergedClassName = cn(
+    s.ToggleButton,
+    className,
+    active && activeProps?.className,
+    active && s.active,
+  ) || undefined;
+
   return (
-    <SegmentedControl.Root {...rest}>
-      {options.map((opt) => (
-        <SegmentedControl.Item key={opt.value} value={opt.value}>
-          {opt.label}
-        </SegmentedControl.Item>
-      ))}
-    </SegmentedControl.Root>
+    <Button
+      {...mergedProps}
+      className={mergedClassName}
+    />
   );
 };

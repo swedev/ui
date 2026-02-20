@@ -26,7 +26,7 @@ export const Range: Story = {
 
 export const Sizes: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <div className="flex flex-col gap-4">
       <Slider semantic="action" size="1" defaultValue={[50]} />
       <Slider semantic="action" size="2" defaultValue={[50]} />
       <Slider semantic="action" size="3" defaultValue={[50]} />
@@ -36,7 +36,7 @@ export const Sizes: Story = {
 
 export const Semantics: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <div className="flex flex-col gap-4">
       <Slider semantic="action" defaultValue={[80]} />
       <Slider semantic="success" defaultValue={[100]} />
       <Slider semantic="warning" defaultValue={[40]} />

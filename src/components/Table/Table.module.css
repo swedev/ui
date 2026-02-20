@@ -1,0 +1,31 @@
+@reference "tailwindcss";
+
+@layer swedev {
+  .Table {
+    :global(.rt-TableRootTable) {
+      @apply align-middle;
+    }
+
+    &:global(.rt-r-size-2) {
+      --table-cell-padding: var(--space-2);
+    }
+
+    &.striped {
+      :global(tbody > tr:nth-child(even)) {
+        @apply bg-(--gray-a2);
+      }
+    }
+
+    &.hoverable {
+      :global(tbody > tr):hover {
+        @apply bg-(--accent-a2);
+      }
+
+      &.striped {
+        :global(tbody > tr:nth-child(even)):hover {
+          @apply bg-(--accent-a3);
+        }
+      }
+    }
+  }
+}

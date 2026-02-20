@@ -1,21 +1,36 @@
 import React from "react";
 import { TextArea as RadixTextArea } from "@radix-ui/themes";
-import type { ComponentProps } from "react";
 import { getRadixColorForSemantic } from "../../theme/colors";
 import type { ColorProps, SemanticProps } from "../../theme/types";
 
-type RadixTextAreaProps = ComponentProps<typeof RadixTextArea>;
+type RadixTextAreaProps = React.ComponentProps<typeof RadixTextArea>;
+type BaseRootProps = Omit<RadixTextAreaProps, "color"> & {
+  className?: string;
+};
 
-type BaseTextAreaProps = Omit<RadixTextAreaProps, "color">;
+export type TextAreaRootProps = BaseRootProps & (SemanticProps | ColorProps);
 
-export type TextAreaProps = BaseTextAreaProps & (SemanticProps | ColorProps);
-
-export const TextArea: React.FC<TextAreaProps> = ({
+const Root = React.forwardRef<HTMLTextAreaElement, TextAreaRootProps>(({
   semantic,
   color,
-  ...rest
-}) => {
-  const finalColor = semantic ? getRadixColorForSemantic(semantic) : color;
+  className,
+  ...props
+}, ref) => {
+  if (semantic) {
+    color = getRadixColorForSemantic(semantic);
+  }
 
-  return <RadixTextArea color={finalColor} {...rest} />;
+  return (
+    <RadixTextArea
+      ref={ref}
+      color={color}
+      className={className}
+      {...props}
+    />
+  );
+});
+Root.displayName = "TextArea.Root";
+
+export const TextArea = {
+  Root,
 };

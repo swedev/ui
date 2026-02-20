@@ -41,27 +41,27 @@ export const Default: Story = {
 export const Success: Story = {
   args: {
     semantic: "success",
-    children: "Betald",
+    children: "Paid",
   },
 };
 
 export const Warning: Story = {
   args: {
     semantic: "warning",
-    children: "Forsenad",
+    children: "Overdue",
   },
 };
 
 export const Pending: Story = {
   args: {
     semantic: "pending",
-    children: "Vantelista",
+    children: "Waitlist",
   },
 };
 
 export const Variants: Story = {
   render: () => (
-    <div style={{ display: "flex", gap: 8 }}>
+    <div className="flex gap-2">
       <Badge semantic="success" variant="solid">Solid</Badge>
       <Badge semantic="success" variant="soft">Soft</Badge>
       <Badge semantic="success" variant="surface">Surface</Badge>
@@ -72,7 +72,7 @@ export const Variants: Story = {
 
 export const AllSemantics: Story = {
   render: () => (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+    <div className="flex flex-wrap gap-2">
       <Badge semantic="action">action</Badge>
       <Badge semantic="destructive">destructive</Badge>
       <Badge semantic="neutral">neutral</Badge>

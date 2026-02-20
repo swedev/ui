@@ -45,7 +45,16 @@ export const WithIcon: Story = {
   args: {
     semantic: "action",
     icon: Save,
-    children: "Save changes",
+    text: "Save changes",
+  },
+};
+
+export const IconRight: Story = {
+  args: {
+    semantic: "action",
+    icon: Plus,
+    iconPosition: "right",
+    text: "Add item",
   },
 };
 
@@ -53,21 +62,30 @@ export const Destructive: Story = {
   args: {
     semantic: "destructive",
     icon: Trash2,
-    children: "Delete",
+    text: "Delete",
   },
 };
 
 export const Loading: Story = {
   args: {
     semantic: "action",
+    icon: Save,
     loading: true,
-    children: "Saving...",
+    text: "Saving...",
+  },
+};
+
+export const AsLink: Story = {
+  args: {
+    semantic: "action",
+    href: "#example",
+    text: "Go somewhere",
   },
 };
 
 export const Variants: Story = {
   render: () => (
-    <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+    <div className="flex gap-2 items-center">
       <Button semantic="action" variant="solid">Solid</Button>
       <Button semantic="action" variant="soft">Soft</Button>
       <Button semantic="action" variant="surface">Surface</Button>
@@ -79,7 +97,7 @@ export const Variants: Story = {
 
 export const Sizes: Story = {
   render: () => (
-    <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+    <div className="flex gap-2 items-center">
       <Button semantic="action" size="1">Small</Button>
       <Button semantic="action" size="2">Medium</Button>
       <Button semantic="action" size="3">Large</Button>
@@ -90,7 +108,7 @@ export const Sizes: Story = {
 
 export const AllSemantics: Story = {
   render: () => (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+    <div className="flex flex-wrap gap-2">
       <Button semantic="action">action</Button>
       <Button semantic="destructive">destructive</Button>
       <Button semantic="neutral">neutral</Button>

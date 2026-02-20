@@ -11,42 +11,48 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./styles.css": "./dist/index.css"
   },
   "files": [
     "dist"
   ],
-  "sideEffects": false,
   "scripts": {
-    "build": "tsup",
+    "build": "vite build",
     "dev": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "vitest run",
     "clean": "rm -rf dist"
   },
   "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
     "@radix-ui/themes": "^3.0.0",
-    "lucide-react": "^0.400.0"
+    "lucide-react": "^0.400.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@radix-ui/themes": "^3",
+    "@storybook/addon-docs": "^10",
+    "@storybook/react-vite": "^10",
+    "@tailwindcss/vite": "^4",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "lucide-react": "^0.469",
     "react": "^19",
     "react-dom": "^19",
-    "@radix-ui/themes": "^3",
-    "lucide-react": "^0.469",
-    "typescript": "^5.7",
-    "tsup": "^8",
-    "vitest": "^3",
-    "@storybook/react-vite": "^10",
-    "@storybook/addon-docs": "^10",
     "storybook": "^10",
-    "@types/react": "^19",
-    "@types/react-dom": "^19"
+    "tailwindcss": "^4",
+    "tsup": "^8",
+    "typescript": "^5.7",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^3"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/swedev/ui"
+  },
+  "dependencies": {
+    "react-day-picker": "^9.13.2"
   }
 }

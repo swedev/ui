@@ -1,0 +1,18 @@
+@reference "tailwindcss";
+
+@layer swedev {
+  .Button {
+    @apply h-auto;
+    padding: calc(var(--space-1) * 1.5) calc(var(--space-1) * 2.5);
+    gap: calc(var(--space-1) * 1.5);
+
+    &:global(.rt-variant-ghost) {
+      @apply m-0;
+    }
+
+    &:global(.rt-r-size-3),
+    &:global(.rt-r-size-4) {
+      @apply px-3 py-1;
+    }
+  }
+}

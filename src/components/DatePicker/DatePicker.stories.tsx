@@ -5,44 +5,49 @@ import { DatePicker } from "./DatePicker";
 const meta: Meta<typeof DatePicker> = {
   title: "Components/DatePicker",
   component: DatePicker,
-  argTypes: {
-    size: { control: "select", options: ["1", "2", "3"] },
-  },
 };
 
 export default meta;
 type Story = StoryObj<typeof DatePicker>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    placeholder: "Select date...",
+  },
 };
 
-export const WithDefaultValue: Story = {
+export const WithValue: Story = {
   args: {
-    defaultValue: "2026-03-15",
+    value: new Date(2026, 2, 15),
+    placeholder: "Select date...",
   },
 };
 
 export const Controlled: Story = {
   render: () => {
-    const [date, setDate] = useState("2026-01-01");
-    return (
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        <DatePicker value={date} onChange={setDate} />
-        <div style={{ fontSize: 13, color: "var(--gray-11)" }}>
-          Selected: {date}
+    const ControlledDemo = () => {
+      const [date, setDate] = useState<Date | null>(new Date(2026, 0, 1));
+      return (
+        <div className="flex flex-col gap-2">
+          <DatePicker
+            value={date}
+            onChange={setDate}
+            placeholder="Select date..."
+          />
+          <span className="text-[13px] text-[var(--gray-11)]">
+            Selected: {date ? date.toISOString().slice(0, 10) : "(none)"}
+          </span>
         </div>
-      </div>
-    );
+      );
+    };
+    return <ControlledDemo />;
   },
 };
 
-export const Sizes: Story = {
-  render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 240 }}>
-      <DatePicker size="1" defaultValue="2026-01-15" />
-      <DatePicker size="2" defaultValue="2026-01-15" />
-      <DatePicker size="3" defaultValue="2026-01-15" />
-    </div>
-  ),
+export const Disabled: Story = {
+  args: {
+    value: new Date(2026, 0, 15),
+    disabled: true,
+    placeholder: "Select date...",
+  },
 };

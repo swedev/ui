@@ -1,0 +1,15 @@
+@reference "tailwindcss";
+
+@layer swedev {
+  .ProgressBar {
+    @apply relative w-full;
+
+    .Overlay {
+      @apply absolute inset-0 flex items-center justify-center pointer-events-none;
+    }
+
+    .Text {
+      @apply text-xs font-medium;
+    }
+  }
+}

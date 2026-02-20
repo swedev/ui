@@ -1,38 +1,61 @@
-import React from "react";
+import React, { createContext, useContext } from "react";
 import { TextField as RadixTextField } from "@radix-ui/themes";
-import type { ComponentProps } from "react";
-import type { LucideIcon } from "lucide-react";
 import { getRadixColorForSemantic } from "../../theme/colors";
 import type { ColorProps, SemanticProps } from "../../theme/types";
+import { cn } from "../../utils";
+import s from "./TextField.module.css";
 
-type RadixTextFieldRootProps = ComponentProps<typeof RadixTextField.Root>;
+// Context to share color from Root to Slot
+interface TextFieldContextValue {
+  color?: React.ComponentProps<typeof RadixTextField.Root>["color"];
+}
 
-type BaseTextFieldProps = Omit<RadixTextFieldRootProps, "color"> & {
-  icon?: LucideIcon;
-  slotRight?: React.ReactNode;
+const TextFieldContext = createContext<TextFieldContextValue>({});
+
+// --- Root ---
+
+type BaseRootProps = Omit<React.ComponentProps<typeof RadixTextField.Root>, "color"> & {
+  className?: string;
 };
 
-export type TextFieldProps = BaseTextFieldProps & (SemanticProps | ColorProps);
+export type TextFieldRootProps = BaseRootProps & (SemanticProps | ColorProps);
 
-export const TextField: React.FC<TextFieldProps> = ({
+const Root = React.forwardRef<HTMLInputElement, TextFieldRootProps>(({
   semantic,
   color,
-  icon: Icon,
-  slotRight,
-  ...rest
-}) => {
-  const finalColor = semantic ? getRadixColorForSemantic(semantic) : color;
+  className,
+  ...props
+}, ref) => {
+  if (semantic) {
+    color = getRadixColorForSemantic(semantic);
+  }
 
   return (
-    <RadixTextField.Root color={finalColor} {...rest}>
-      {Icon && (
-        <RadixTextField.Slot>
-          <Icon size={14} />
-        </RadixTextField.Slot>
-      )}
-      {slotRight && (
-        <RadixTextField.Slot side="right">{slotRight}</RadixTextField.Slot>
-      )}
-    </RadixTextField.Root>
+    <TextFieldContext.Provider value={{ color }}>
+      <RadixTextField.Root
+        autoComplete="off"
+        color={color}
+        ref={ref}
+        className={cn(s.Root, semantic && s.semantic, className)}
+        {...props}
+      />
+    </TextFieldContext.Provider>
   );
+});
+Root.displayName = "TextField.Root";
+
+// --- Slot ---
+
+type SlotProps = React.ComponentProps<typeof RadixTextField.Slot>;
+
+const Slot: React.FC<SlotProps> = (props) => {
+  return <RadixTextField.Slot {...props} />;
+};
+Slot.displayName = "TextField.Slot";
+
+// --- Export compound component ---
+
+export const TextField = {
+  Root,
+  Slot,
 };

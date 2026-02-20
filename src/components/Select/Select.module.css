@@ -1,0 +1,35 @@
+@reference "tailwindcss";
+
+@layer swedev {
+  .Trigger {
+    @apply h-auto;
+    padding: calc(var(--space-1) * 1.5) calc(var(--space-1) * 2.5);
+    gap: calc(var(--space-1) * 1.5);
+
+    &:global(.rt-variant-ghost) {
+      @apply m-0;
+    }
+
+    &:global(.rt-r-size-3),
+    &:global(.rt-r-size-4) {
+      @apply px-3 py-1;
+    }
+
+    &.solid {
+      @apply bg-(--accent-9) text-(--accent-1) border-(--accent-7) shadow-none;
+
+      &:hover {
+        @apply bg-(--accent-10) border-(--accent-6);
+      }
+    }
+
+    &.semantic {
+      @apply inset-ring inset-ring-(--focus-8);
+    }
+  }
+
+  /* Ensure Select dropdown appears above modal overlays */
+  :global(.rt-SelectContent) {
+    @apply z-50;
+  }
+}

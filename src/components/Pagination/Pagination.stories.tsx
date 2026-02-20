@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Pagination } from "./Pagination";
+import { PaginationNav } from "./Pagination";
 
-const meta: Meta<typeof Pagination> = {
-  title: "Components/Pagination",
-  component: Pagination,
+const meta: Meta<typeof PaginationNav> = {
+  title: "Components/PaginationNav",
+  component: PaginationNav,
 };
 
 export default meta;
-type Story = StoryObj<typeof Pagination>;
+type Story = StoryObj<typeof PaginationNav>;
 
 const PaginationDemo = ({
   totalPages = 10,
@@ -17,12 +17,10 @@ const PaginationDemo = ({
 }: {
   totalPages?: number;
   initialPage?: number;
-  size?: "1" | "2" | "3";
-  showPageNumbers?: boolean;
-}) => {
+} & Partial<React.ComponentProps<typeof PaginationNav>>) => {
   const [page, setPage] = useState(initialPage);
   return (
-    <Pagination
+    <PaginationNav
       page={page}
       totalPages={totalPages}
       onPageChange={setPage}
@@ -43,16 +41,10 @@ export const ManyPages: Story = {
   render: () => <PaginationDemo totalPages={50} initialPage={25} />,
 };
 
-export const WithoutPageNumbers: Story = {
-  render: () => <PaginationDemo showPageNumbers={false} />,
+export const WithoutNavButtons: Story = {
+  render: () => <PaginationDemo showNavButtons={false} />,
 };
 
-export const Sizes: Story = {
-  render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      <PaginationDemo size="1" totalPages={5} />
-      <PaginationDemo size="2" totalPages={5} />
-      <PaginationDemo size="3" totalPages={5} />
-    </div>
-  ),
+export const MoreVisiblePages: Story = {
+  render: () => <PaginationDemo totalPages={20} visiblePageCount={5} initialPage={10} />,
 };

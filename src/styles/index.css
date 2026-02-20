@@ -1,0 +1,4 @@
+@layer theme, base, radix, swedev, components, utilities;
+@import "@radix-ui/themes/styles.css" layer(radix);
+@import "tailwindcss";
+@source "../components/**/*.tsx";

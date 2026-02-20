@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { TextArea } from "./TextArea";
 
-const meta: Meta<typeof TextArea> = {
+const meta: Meta<typeof TextArea.Root> = {
   title: "Components/TextArea",
-  component: TextArea,
+  component: TextArea.Root,
   argTypes: {
     semantic: {
       control: "select",
@@ -15,7 +15,7 @@ const meta: Meta<typeof TextArea> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof TextArea>;
+type Story = StoryObj<typeof TextArea.Root>;
 
 export const Default: Story = {
   args: {
@@ -33,10 +33,10 @@ export const WithValue: Story = {
 
 export const Variants: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      <TextArea variant="classic" placeholder="Classic" />
-      <TextArea variant="surface" placeholder="Surface" />
-      <TextArea variant="soft" placeholder="Soft" />
+    <div className="flex flex-col gap-3">
+      <TextArea.Root variant="classic" placeholder="Classic" />
+      <TextArea.Root variant="surface" placeholder="Surface" />
+      <TextArea.Root variant="soft" placeholder="Soft" />
     </div>
   ),
 };

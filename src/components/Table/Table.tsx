@@ -1,6 +1,8 @@
 import React, { forwardRef } from "react";
 import { Table as RadixTable } from "@radix-ui/themes";
 import type { ComponentProps } from "react";
+import { cn } from "../../utils";
+import s from "./Table.module.css";
 
 type RadixTableRootProps = ComponentProps<typeof RadixTable.Root>;
 
@@ -10,17 +12,11 @@ export interface TableRootProps extends RadixTableRootProps {
 }
 
 const Root = forwardRef<HTMLDivElement, TableRootProps>(
-  ({ striped, hoverable, className, children, style, ...rest }, ref) => {
+  ({ striped, hoverable, className, children, ...rest }, ref) => {
     return (
       <RadixTable.Root
         ref={ref}
-        className={className}
-        style={{
-          ...style,
-          ...(striped && {
-            "--table-row-background-striped": "var(--gray-a2)",
-          } as React.CSSProperties),
-        }}
+        className={cn(s.Table, striped && s.striped, hoverable && s.hoverable, className)}
         {...rest}
       >
         {children}

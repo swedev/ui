@@ -1,0 +1,28 @@
+@reference "tailwindcss";
+
+@layer swedev {
+  .Pagination {
+    @apply flex items-center gap-1;
+
+    .NavButton {
+      @apply min-w-8;
+    }
+
+    .NavButtonWide {
+      @apply min-w-8 px-6;
+    }
+
+    .PageButton {
+      @apply min-w-8;
+    }
+
+    /* When Pagination has a fixed width, stretch page buttons to fill */
+    &[class*="w-"] .PageButton {
+      @apply flex-1 basis-4 min-w-0;
+    }
+
+    .Ellipsis {
+      @apply px-2 text-gray-400 select-none;
+    }
+  }
+}

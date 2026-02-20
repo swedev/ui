@@ -1,2 +1,2 @@
-export { Pagination } from "./Pagination";
-export type { PaginationProps } from "./Pagination";
+export { PaginationNav } from "./Pagination";
+export type { PaginationNavProps } from "./Pagination";

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Checkbox } from "./Checkbox";
+import { LabelledCheckbox } from "./LabelledCheckbox";
 
 const meta: Meta<typeof Checkbox> = {
   title: "Components/Checkbox",
@@ -20,27 +21,39 @@ export const Default: Story = {
   args: { semantic: "action", defaultChecked: true },
 };
 
-export const WithLabel: Story = {
-  args: { semantic: "action", label: "Accept terms and conditions" },
-};
-
 export const Sizes: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      <Checkbox semantic="action" size="1" label="Small" />
-      <Checkbox semantic="action" size="2" label="Medium" />
-      <Checkbox semantic="action" size="3" label="Large" />
+    <div className="flex flex-col gap-3">
+      <Checkbox semantic="action" size="1" />
+      <Checkbox semantic="action" size="2" />
+      <Checkbox semantic="action" size="3" />
     </div>
   ),
 };
 
-export const Semantics: Story = {
+export const WithLabel: StoryObj<typeof LabelledCheckbox> = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      <Checkbox semantic="action" label="Action" defaultChecked />
-      <Checkbox semantic="success" label="Success" defaultChecked />
-      <Checkbox semantic="warning" label="Warning" defaultChecked />
-      <Checkbox semantic="error" label="Error" defaultChecked />
+    <LabelledCheckbox semantic="action" label="Accept terms and conditions" />
+  ),
+};
+
+export const LabelledSizes: StoryObj<typeof LabelledCheckbox> = {
+  render: () => (
+    <div className="flex flex-col gap-3">
+      <LabelledCheckbox semantic="action" size="1" label="Small" />
+      <LabelledCheckbox semantic="action" size="2" label="Medium" />
+      <LabelledCheckbox semantic="action" size="3" label="Large" />
+    </div>
+  ),
+};
+
+export const LabelledSemantics: StoryObj<typeof LabelledCheckbox> = {
+  render: () => (
+    <div className="flex flex-col gap-3">
+      <LabelledCheckbox semantic="action" label="Action" defaultChecked />
+      <LabelledCheckbox semantic="success" label="Success" defaultChecked />
+      <LabelledCheckbox semantic="warning" label="Warning" defaultChecked />
+      <LabelledCheckbox semantic="error" label="Error" defaultChecked />
     </div>
   ),
 };

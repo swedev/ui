@@ -1,0 +1,15 @@
+@reference "tailwindcss";
+
+@layer swedev {
+  .LabelledCheckbox {
+    @apply flex gap-2 font-normal leading-5;
+
+    &.semantic {
+      @apply text-(--accent-9);
+
+      :global(.rt-CheckboxButton) {
+        @apply shadow-[inset_0_0_0_1px_var(--accent-7)];
+      }
+    }
+  }
+}

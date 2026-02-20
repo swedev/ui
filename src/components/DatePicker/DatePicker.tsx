@@ -1,190 +1,168 @@
-import React, { useState, useRef, useEffect } from "react";
-import { TextField as RadixTextField, Popover, Button } from "@radix-ui/themes";
-import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { DayPicker } from "react-day-picker";
+import { Popover } from "@radix-ui/themes";
+import { Calendar } from "lucide-react";
+import { Button } from "../Button/Button";
+import { TextField } from "../TextField/TextField";
+import s from "./DatePicker.module.css";
 
-export interface DatePickerProps {
-  value?: string;
-  defaultValue?: string;
-  onChange?: (date: string) => void;
-  placeholder?: string;
-  size?: "1" | "2" | "3";
-  locale?: string;
+import "react-day-picker/style.css";
+
+interface DatePickerProps extends Omit<
+  React.ComponentProps<typeof TextField.Root>,
+  "onChange" | "value" | "color"
+> {
+  value?: Date | null;
+  /** Date format function. Default: yyyy-MM-dd */
+  formatDate?: (date: Date) => string;
+  /** Date parse function. Default: parses yyyy-MM-dd */
+  parseDate?: (str: string) => Date | null;
+  /** Optional props passed to internal DayPicker */
+  pickerProps?: Omit<
+    React.ComponentProps<typeof DayPicker>,
+    "onSelect" | "selected" | "mode"
+  >;
+  onChange?: (v: Date | null) => void;
 }
 
-const DAYS_SV = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-function getDaysInMonth(year: number, month: number): Date[] {
-  const days: Date[] = [];
-  const date = new Date(year, month, 1);
-  while (date.getMonth() === month) {
-    days.push(new Date(date));
-    date.setDate(date.getDate() + 1);
-  }
-  return days;
-}
-
-function formatDate(date: Date): string {
+function defaultFormatDate(date: Date): string {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, "0");
   const d = String(date.getDate()).padStart(2, "0");
   return `${y}-${m}-${d}`;
 }
 
-function parseDate(str: string): Date | null {
+function defaultParseDate(str: string): Date | null {
   const match = str.match(/^(\d{4})-(\d{2})-(\d{2})$/);
   if (!match) return null;
   const date = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
   return isNaN(date.getTime()) ? null : date;
 }
 
-const MONTH_NAMES = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
-
 export const DatePicker: React.FC<DatePickerProps> = ({
-  value: controlledValue,
-  defaultValue,
   onChange,
-  placeholder = "YYYY-MM-DD",
-  size = "2",
+  value = null,
+  pickerProps,
+  formatDate: formatFn = defaultFormatDate,
+  parseDate: parseFn = defaultParseDate,
+  disabled = false,
+  ...rest
 }) => {
-  const [open, setOpen] = useState(false);
-  const [internalValue, setInternalValue] = useState(defaultValue ?? "");
-  const value = controlledValue ?? internalValue;
+  const [showPicker, setShowPicker] = useState(false);
+  const [rawValue, setRawValue] = useState("");
+  const [curatedValue, setCuratedValue] = useState<Date | null>(null);
+  const [activeMonth, setActiveMonth] = useState<Date>(new Date());
 
-  const selected = parseDate(value);
-  const [viewYear, setViewYear] = useState(
-    selected?.getFullYear() ?? new Date().getFullYear(),
-  );
-  const [viewMonth, setViewMonth] = useState(
-    selected?.getMonth() ?? new Date().getMonth(),
-  );
+  useEffect(() => {
+    tryToSetValue(value);
+  }, []);
 
-  const days = getDaysInMonth(viewYear, viewMonth);
-  const firstDayOfWeek = (days[0].getDay() + 6) % 7; // Monday = 0
-
-  const handleSelect = (date: Date) => {
-    const formatted = formatDate(date);
-    if (controlledValue === undefined) {
-      setInternalValue(formatted);
+  // Sync internal state when external value changes
+  useEffect(() => {
+    if (value === null && curatedValue !== null) {
+      setRawValue("");
+      setCuratedValue(null);
+    } else if (value && value.valueOf() !== curatedValue?.valueOf()) {
+      setRawValue(formatFn(value));
+      setCuratedValue(value);
+      setActiveMonth(value);
     }
-    onChange?.(formatted);
-    setOpen(false);
-  };
+  }, [value]);
 
-  const prevMonth = () => {
-    if (viewMonth === 0) {
-      setViewMonth(11);
-      setViewYear(viewYear - 1);
+  function setValue(v: Date | null) {
+    if ((!v || isNaN(v.valueOf())) && v !== curatedValue) {
+      setCuratedValue(null);
+      onChange?.(null);
+    } else if (v && v.valueOf() !== curatedValue?.valueOf()) {
+      setCuratedValue(v);
+      onChange?.(v);
+      setActiveMonth(v);
+    }
+  }
+
+  function tryToSetValue(newValue: Date | string | null | undefined) {
+    if (newValue instanceof Date) {
+      setRawValue(formatFn(newValue));
+      setValue(newValue);
+    } else if (typeof newValue === "string") {
+      setRawValue(newValue);
+      if (newValue === "") {
+        setValue(null);
+      } else {
+        const parsed = parseFn(newValue);
+        setValue(parsed);
+      }
     } else {
-      setViewMonth(viewMonth - 1);
+      setRawValue("");
+      setValue(null);
     }
-  };
+  }
 
-  const nextMonth = () => {
-    if (viewMonth === 11) {
-      setViewMonth(0);
-      setViewYear(viewYear + 1);
-    } else {
-      setViewMonth(viewMonth + 1);
+  function handleKeyUp(e: React.KeyboardEvent) {
+    if (e.key === "Escape") {
+      setShowPicker(false);
     }
-  };
+  }
+
+  useEffect(() => {
+    if (disabled) {
+      setShowPicker(false);
+    }
+  }, [disabled]);
 
   return (
-    <Popover.Root open={open} onOpenChange={setOpen}>
-      <Popover.Trigger>
-        <RadixTextField.Root
-          size={size}
-          value={value}
-          placeholder={placeholder}
-          readOnly
-          style={{ cursor: "pointer" }}
+    <div className={s.DatePicker}>
+      <Popover.Root
+        open={disabled ? false : showPicker}
+        onOpenChange={(open) => {
+          if (!disabled) setShowPicker(open);
+        }}
+      >
+        <TextField.Root
+          {...rest}
+          disabled={disabled}
+          value={rawValue}
+          onChange={(e) => tryToSetValue(e.currentTarget.value)}
+          onKeyUp={handleKeyUp}
+          onClick={() => { if (!disabled) setShowPicker(true); }}
+          onFocus={() => { if (!disabled) setShowPicker(true); }}
         >
-          <RadixTextField.Slot side="right">
-            <Calendar size={14} />
-          </RadixTextField.Slot>
-        </RadixTextField.Root>
-      </Popover.Trigger>
-      <Popover.Content style={{ width: 280, padding: 12 }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 8,
-          }}
+          <TextField.Slot side="right" className={s.Slot}>
+            {/* @ts-ignore - asChild works at runtime but missing from Radix types */}
+            <Popover.Trigger asChild>
+              <Button
+                icon={Calendar}
+                variant="ghost"
+                aria-label="Toggle calendar"
+                disabled={disabled}
+                className={s.CalendarButton}
+              />
+            </Popover.Trigger>
+          </TextField.Slot>
+        </TextField.Root>
+
+        <Popover.Content
+          side="bottom"
+          align="end"
+          sideOffset={8}
+          onKeyUp={handleKeyUp}
+          className={s.PopoverContent}
         >
-          <Button variant="ghost" color="gray" size="1" onClick={prevMonth}>
-            <ChevronLeft size={14} />
-          </Button>
-          <span style={{ fontWeight: 600, fontSize: 14 }}>
-            {MONTH_NAMES[viewMonth]} {viewYear}
-          </span>
-          <Button variant="ghost" color="gray" size="1" onClick={nextMonth}>
-            <ChevronRight size={14} />
-          </Button>
-        </div>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(7, 1fr)",
-            gap: 2,
-            textAlign: "center",
-          }}
-        >
-          {DAYS_SV.map((d) => (
-            <div
-              key={d}
-              style={{
-                fontSize: 11,
-                fontWeight: 600,
-                color: "var(--gray-9)",
-                padding: "4px 0",
-              }}
-            >
-              {d}
-            </div>
-          ))}
-
-          {Array.from({ length: firstDayOfWeek }).map((_, i) => (
-            <div key={`empty-${i}`} />
-          ))}
-
-          {days.map((date) => {
-            const isSelected =
-              selected && formatDate(date) === formatDate(selected);
-            const isToday = formatDate(date) === formatDate(new Date());
-
-            return (
-              <button
-                key={date.getDate()}
-                type="button"
-                onClick={() => handleSelect(date)}
-                style={{
-                  border: "none",
-                  borderRadius: 6,
-                  padding: "6px 0",
-                  cursor: "pointer",
-                  fontSize: 13,
-                  fontWeight: isToday ? 700 : 400,
-                  background: isSelected
-                    ? "var(--accent-9)"
-                    : "transparent",
-                  color: isSelected
-                    ? "white"
-                    : isToday
-                      ? "var(--accent-11)"
-                      : "inherit",
-                }}
-              >
-                {date.getDate()}
-              </button>
-            );
-          })}
-        </div>
-      </Popover.Content>
-    </Popover.Root>
+          <DayPicker
+            {...pickerProps}
+            mode="single"
+            onSelect={(selectedDay: Date | undefined) => {
+              tryToSetValue(selectedDay ?? null);
+              setShowPicker(false);
+            }}
+            onMonthChange={setActiveMonth}
+            selected={curatedValue || undefined}
+            month={activeMonth}
+          />
+        </Popover.Content>
+      </Popover.Root>
+    </div>
   );
 };
+
+export type { DatePickerProps };

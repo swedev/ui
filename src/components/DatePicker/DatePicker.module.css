@@ -1,0 +1,19 @@
+@reference "tailwindcss";
+
+@layer swedev {
+  .DatePicker {
+    @apply relative;
+
+    .Slot {
+      @apply pl-0 pr-px;
+    }
+
+    .CalendarButton {
+      @apply rounded-l-none;
+    }
+
+    .PopoverContent {
+      @apply bg-(--color-background) px-4 py-2 border border-(--gray-6) rounded-lg shadow-lg;
+    }
+  }
+}

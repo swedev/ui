@@ -1,11 +1,21 @@
+import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { List, LayoutGrid, Table2, Clock } from "lucide-react";
 import { ToggleButton } from "./ToggleButton";
 
 const meta: Meta<typeof ToggleButton> = {
   title: "Components/ToggleButton",
   component: ToggleButton,
   argTypes: {
-    size: { control: "select", options: ["1", "2", "3"] },
+    active: { control: "boolean" },
+    semantic: {
+      control: "select",
+      options: ["action", "info", "success", "warning", "error"],
+    },
+    variant: {
+      control: "select",
+      options: ["solid", "soft", "surface", "outline", "ghost"],
+    },
   },
 };
 
@@ -14,63 +24,58 @@ type Story = StoryObj<typeof ToggleButton>;
 
 export const Default: Story = {
   args: {
-    defaultValue: "list",
-    options: [
-      { value: "list", label: "List" },
-      { value: "grid", label: "Grid" },
-    ],
+    semantic: "action",
+    active: true,
+    text: "Active",
   },
 };
 
-export const ThreeOptions: Story = {
+export const Inactive: Story = {
   args: {
-    defaultValue: "all",
-    options: [
-      { value: "all", label: "All" },
-      { value: "active", label: "Active" },
-      { value: "inactive", label: "Inactive" },
-    ],
+    semantic: "action",
+    active: false,
+    text: "Inactive",
   },
 };
 
-export const ViewModes: Story = {
+export const WithIcon: Story = {
   args: {
-    defaultValue: "table",
-    options: [
-      { value: "table", label: "Table" },
-      { value: "cards", label: "Cards" },
-      { value: "timeline", label: "Timeline" },
-    ],
+    semantic: "action",
+    active: true,
+    icon: List,
+    text: "List view",
   },
 };
 
-export const Sizes: Story = {
-  render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+const ViewToggleDemo = () => {
+  const [view, setView] = useState<"list" | "grid" | "table">("list");
+  return (
+    <div className="flex gap-1">
       <ToggleButton
-        size="1"
-        defaultValue="a"
-        options={[
-          { value: "a", label: "A" },
-          { value: "b", label: "B" },
-        ]}
+        semantic="action"
+        active={view === "list"}
+        icon={List}
+        text="List"
+        onClick={() => setView("list")}
       />
       <ToggleButton
-        size="2"
-        defaultValue="a"
-        options={[
-          { value: "a", label: "A" },
-          { value: "b", label: "B" },
-        ]}
+        semantic="action"
+        active={view === "grid"}
+        icon={LayoutGrid}
+        text="Grid"
+        onClick={() => setView("grid")}
       />
       <ToggleButton
-        size="3"
-        defaultValue="a"
-        options={[
-          { value: "a", label: "A" },
-          { value: "b", label: "B" },
-        ]}
+        semantic="action"
+        active={view === "table"}
+        icon={Table2}
+        text="Table"
+        onClick={() => setView("table")}
       />
     </div>
-  ),
+  );
+};
+
+export const ViewToggleGroup: Story = {
+  render: () => <ViewToggleDemo />,
 };

@@ -1,97 +1,149 @@
 import React from "react";
-import { Button, Flex, Text } from "@radix-ui/themes";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowLeftToLine, ArrowRight } from "lucide-react";
+import type { ButtonProps } from "../Button/Button";
+import { Button } from "../Button/Button";
+import { cn } from "../../utils";
+import s from "./Pagination.module.css";
 
-export interface PaginationProps {
+export interface PaginationNavProps {
   page: number;
   totalPages: number;
-  onPageChange: (page: number) => void;
-  size?: "1" | "2" | "3";
-  showPageNumbers?: boolean;
-  maxVisiblePages?: number;
+  className?: string;
+  /** Number of page buttons to show in the middle (default 3) */
+  visiblePageCount?: number;
+  /** Show first/prev/next nav buttons (default true) */
+  showNavButtons?: boolean;
+  /** Show nav buttons when disabled, or hide them (default true) */
+  showDisabledButtons?: boolean;
+  /** Style props for nav buttons (first, prev, next) */
+  navButtonProps?: Partial<ButtonProps>;
+  /** Style props for page number buttons */
+  pageButtonProps?: Partial<ButtonProps>;
+  /** Style props for the selected page button */
+  selectedPageButtonProps?: Partial<ButtonProps>;
+  onPageChange?: (page: number) => void;
 }
 
-export const Pagination: React.FC<PaginationProps> = ({
+/**
+ * Generate page numbers to display.
+ * Shows ellipsis if gap, pages around current, ellipsis if gap, then last page.
+ */
+function getPageNumbers(
+  currentPage: number,
+  totalPages: number,
+  visibleCount: number,
+): (number | "...")[] {
+  const delta = Math.floor(visibleCount / 2);
+  const pages: (number | "...")[] = [];
+
+  let rangeStart = currentPage - delta;
+  let rangeEnd = currentPage + delta;
+
+  if (rangeStart < 1) {
+    rangeEnd = Math.min(totalPages, rangeEnd + (1 - rangeStart));
+    rangeStart = 1;
+  }
+  if (rangeEnd > totalPages) {
+    rangeStart = Math.max(1, rangeStart - (rangeEnd - totalPages));
+    rangeEnd = totalPages;
+  }
+
+  if (rangeStart > 1) {
+    pages.push("...");
+  }
+
+  for (let i = rangeStart; i <= rangeEnd; i++) {
+    pages.push(i);
+  }
+
+  if (rangeEnd < totalPages - 1) {
+    pages.push("...");
+    pages.push(totalPages);
+  } else if (rangeEnd === totalPages - 1) {
+    pages.push(totalPages);
+  }
+
+  return pages;
+}
+
+export const PaginationNav: React.FC<PaginationNavProps> = ({
   page,
   totalPages,
+  className,
+  visiblePageCount = 3,
+  showNavButtons = true,
+  showDisabledButtons = true,
+  navButtonProps,
+  pageButtonProps,
+  selectedPageButtonProps,
   onPageChange,
-  size = "2",
-  showPageNumbers = true,
-  maxVisiblePages = 5,
 }) => {
   if (totalPages <= 1) return null;
 
-  const getVisiblePages = (): (number | "...")[] => {
-    if (totalPages <= maxVisiblePages) {
-      return Array.from({ length: totalPages }, (_, i) => i + 1);
+  const handlePageClick = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages && newPage !== page) {
+      onPageChange?.(newPage);
     }
-
-    const pages: (number | "...")[] = [];
-    const half = Math.floor(maxVisiblePages / 2);
-    let start = Math.max(1, page - half);
-    let end = Math.min(totalPages, start + maxVisiblePages - 1);
-
-    if (end - start < maxVisiblePages - 1) {
-      start = Math.max(1, end - maxVisiblePages + 1);
-    }
-
-    if (start > 1) {
-      pages.push(1);
-      if (start > 2) pages.push("...");
-    }
-
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
-    }
-
-    if (end < totalPages) {
-      if (end < totalPages - 1) pages.push("...");
-      pages.push(totalPages);
-    }
-
-    return pages;
   };
 
+  const pageNumbers = getPageNumbers(page, totalPages, visiblePageCount);
+  const atFirst = page <= 1;
+  const atLast = page >= totalPages;
+  const showFirstNav = showNavButtons && (showDisabledButtons || !atFirst);
+  const showLastNav = showNavButtons && (showDisabledButtons || !atLast);
+
   return (
-    <Flex gap="1" align="center">
-      <Button
-        variant="soft"
-        color="gray"
-        size={size}
-        disabled={page <= 1}
-        onClick={() => onPageChange(page - 1)}
-      >
-        <ChevronLeft size={14} />
-      </Button>
+    <div className={cn(s.Pagination, className)}>
+      {showFirstNav && (
+        <Button
+          variant="soft"
+          {...navButtonProps}
+          icon={ArrowLeftToLine}
+          disabled={atFirst}
+          onClick={() => handlePageClick(1)}
+          className={s.NavButton}
+        />
+      )}
+      {showFirstNav && (
+        <Button
+          variant="soft"
+          {...navButtonProps}
+          icon={ArrowLeft}
+          disabled={atFirst}
+          onClick={() => handlePageClick(page - 1)}
+          className={s.NavButtonWide}
+        />
+      )}
 
-      {showPageNumbers &&
-        getVisiblePages().map((p, i) =>
-          p === "..." ? (
-            <Text key={`ellipsis-${i}`} size={size} color="gray" style={{ padding: "0 4px" }}>
-              ...
-            </Text>
-          ) : (
-            <Button
-              key={p}
-              variant={p === page ? "solid" : "soft"}
-              color={p === page ? "blue" : "gray"}
-              size={size}
-              onClick={() => onPageChange(p)}
-            >
-              {p}
-            </Button>
-          ),
-        )}
+      {pageNumbers.map((pageNum, index) =>
+        pageNum === "..."
+          ? (
+              <span key={`ellipsis-${index}`} className={s.Ellipsis}>
+                ...
+              </span>
+            )
+          : (
+              <Button
+                key={pageNum}
+                variant={pageNum === page ? "solid" : "soft"}
+                {...(pageNum === page ? selectedPageButtonProps : pageButtonProps)}
+                text={String(pageNum)}
+                onClick={() => handlePageClick(pageNum as number)}
+                className={s.PageButton}
+              />
+            ),
+      )}
 
-      <Button
-        variant="soft"
-        color="gray"
-        size={size}
-        disabled={page >= totalPages}
-        onClick={() => onPageChange(page + 1)}
-      >
-        <ChevronRight size={14} />
-      </Button>
-    </Flex>
+      {showLastNav && (
+        <Button
+          variant="soft"
+          {...navButtonProps}
+          icon={ArrowRight}
+          disabled={atLast}
+          onClick={() => handlePageClick(page + 1)}
+          className={s.NavButtonWide}
+        />
+      )}
+    </div>
   );
 };

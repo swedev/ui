@@ -1,0 +1,9 @@
+@reference "tailwindcss";
+
+@layer swedev {
+  .Root {
+    &.semantic {
+      @apply inset-ring inset-ring-(--accent-7);
+    }
+  }
+}

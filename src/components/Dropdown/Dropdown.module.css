@@ -1,0 +1,7 @@
+@reference "tailwindcss";
+
+@layer swedev {
+  .ActionItem {
+    @apply flex items-center gap-2;
+  }
+}

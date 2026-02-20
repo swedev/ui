@@ -1,6 +1,8 @@
+import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Clock, ShieldAlert } from "lucide-react";
+import { Clock } from "lucide-react";
 import { Callout } from "./Callout";
+import { Button } from "../Button/Button";
 
 const meta: Meta<typeof Callout> = {
   title: "Components/Callout",
@@ -65,18 +67,10 @@ export const Error: Story = {
   },
 };
 
-export const Pending: Story = {
-  args: {
-    semantic: "pending",
-    title: "Awaiting approval",
-    message: "The motion is pending board review.",
-  },
-};
-
 export const CustomIcon: Story = {
   args: {
     semantic: "warning",
-    icon: Clock,
+    icon: <Clock size={18} />,
     title: "Expires soon",
     message: "The banking consent expires in 3 days.",
   },
@@ -93,16 +87,51 @@ export const NoIcon: Story = {
 
 export const Dismissible: Story = {
   args: {
-    semantic: "info",
-    title: "Tip",
-    message: "You can dismiss this callout.",
+    semantic: "success",
+    children: "The thing you did was successful",
     dismissible: true,
   },
 };
 
+export const VerticalNeutral: Story = {
+  args: {
+    semantic: "neutral",
+    variant: "soft",
+    layout: "vertical",
+    title: "No files found",
+    message: "Upload files by using the form on the right.",
+    className: "w-[400px]",
+  },
+};
+
+export const VerticalWithActions: Story = {
+  args: {
+    semantic: "warning",
+    layout: "vertical",
+    message: "There is something you need to pay attention to. Make sure you know what you are doing.",
+    className: "w-[400px]",
+    actions: (
+      <div className="flex gap-2 justify-end">
+        <Button variant="outline">Ignore</Button>
+        <Button semantic="action">Take Action</Button>
+      </div>
+    ),
+  },
+};
+
+export const Variants: Story = {
+  render: () => (
+    <div className="flex flex-col gap-3 max-w-lg">
+      <Callout semantic="info" variant="surface">Surface variant</Callout>
+      <Callout semantic="info" variant="soft">Soft variant</Callout>
+      <Callout semantic="info" variant="outline">Outline variant</Callout>
+    </div>
+  ),
+};
+
 export const AllSemantics: Story = {
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+    <div className="flex flex-col gap-3">
       <Callout semantic="action" message="action" />
       <Callout semantic="destructive" message="destructive" />
       <Callout semantic="neutral" message="neutral" />

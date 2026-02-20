@@ -1,0 +1,23 @@
+@reference "tailwindcss";
+
+@layer swedev {
+  .Breadcrumbs {
+
+    ul {
+      @apply flex flex-wrap items-center gap-4;
+
+      li {
+        @apply flex items-center;
+
+        &:not(:last-child)::after {
+          @apply ml-2 inline-block w-[0.45em] h-[0.45em] border-current border-solid border-t-1 border-r-1;
+          transform-origin: bottom;
+          transform: rotate(45deg);
+          content: '';
+        }
+      }
+
+    }
+
+  }
+}

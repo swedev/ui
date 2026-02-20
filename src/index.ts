@@ -1,12 +1,14 @@
 // Components
 export {
   Badge,
+  Breadcrumbs,
   Button,
   Callout,
   Checkbox,
+  LabelledCheckbox,
   DatePicker,
   Dropdown,
-  Pagination,
+  PaginationNav,
   ProgressBar,
   Select,
   Slider,
@@ -19,20 +21,31 @@ export {
 
 export type {
   BadgeProps,
+  BreadcrumbsProps,
+  BreadcrumbItem,
   ButtonProps,
   CalloutProps,
   CheckboxProps,
+  LabelledCheckboxProps,
   DatePickerProps,
-  PaginationProps,
+  ActionDropdownItem,
+  ActionDropdownProps,
+  PaginationNavProps,
   ProgressBarProps,
+  SelectRootProps,
+  SelectTriggerProps,
+  SelectContentProps,
+  SelectItemProps,
   SliderProps,
   SwitchProps,
   TableRootProps,
-  TextAreaProps,
-  TextFieldProps,
+  TextAreaRootProps,
+  TextFieldRootProps,
   ToggleButtonProps,
-  ToggleOption,
 } from "./components";
+
+// Utils
+export { cn } from "./utils";
 
 // Theme
 export {
