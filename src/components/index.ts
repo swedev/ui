@@ -46,5 +46,12 @@ export type { TextAreaRootProps } from "./TextArea";
 export { TextField } from "./TextField";
 export type { TextFieldRootProps } from "./TextField";
 
+export { Modal } from "./Modal";
+export { ConfirmModal } from "./Modal";
+export type { ConfirmModalProps } from "./Modal";
+export { DeleteModal } from "./Modal";
+export { AlertModal } from "./Modal";
+export type { AlertModalProps } from "./Modal";
+
 export { ToggleButton } from "./ToggleButton";
 export type { ToggleButtonProps } from "./ToggleButton";

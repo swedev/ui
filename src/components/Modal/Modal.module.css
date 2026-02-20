@@ -1,0 +1,56 @@
+@reference "tailwindcss";
+
+@layer swedev {
+  .Content {
+    @apply bg-white rounded-lg shadow-xl p-0;
+  }
+
+  .Header {
+    @apply relative p-4;
+    background-color: var(--gray-3);
+  }
+
+  .Title {
+    @apply flex items-center gap-[0.4em];
+
+    &:global(.rt-Heading) {
+      @apply text-2xl font-semibold;
+    }
+  }
+
+  .Description {
+    @apply pl-10;
+  }
+
+  .HeaderIcon {
+    @apply flex items-center;
+  }
+
+  .CloseButton {
+    @apply absolute top-3 right-3 flex items-center justify-center w-7 h-7
+           rounded cursor-pointer border-0 bg-transparent
+           opacity-60 hover:opacity-100 transition-opacity;
+  }
+
+  .Body {
+    @apply block;
+    padding: var(--dialog-content-padding);
+  }
+
+  .Footer {
+    @apply flex p-4 items-center justify-between gap-2;
+    background-color: var(--gray-3);
+  }
+
+  .ConfirmContent {
+    @apply w-96;
+  }
+
+  .ConfirmHeader {
+    background-color: var(--color-panel);
+  }
+
+  .ConfirmBody {
+    @apply pt-0 pb-8;
+  }
+}
