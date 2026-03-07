@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "description": "Shared, themeable UI components for swedev projects",
   "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,8 +27,9 @@
     "build": "vite build",
     "dev": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "vitest run",
-    "clean": "rm -rf dist"
+    "test": "vitest run --passWithNoTests",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
     "@radix-ui/themes": "^3.0.0",
@@ -42,17 +49,16 @@
     "react-dom": "^19",
     "storybook": "^10",
     "tailwindcss": "^4",
-    "tsup": "^8",
     "typescript": "^5.7",
     "vite-plugin-dts": "^4.5.4",
     "vitest": "^3"
   },
+  "dependencies": {
+    "react-day-picker": "^9.13.2"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/swedev/ui"
-  },
-  "dependencies": {
-    "react-day-picker": "^9.13.2"
+    "url": "git+https://github.com/swedev/ui.git"
   }
 }

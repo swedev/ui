@@ -4,7 +4,7 @@
 
 Shared, themeable UI component library for swedev projects (Styrla, OpenVera, Timla).
 
-Built on Radix Themes with semantic wrappers, Lucide React icons, and Tailwind CSS.
+Built on Radix Themes with semantic wrappers, Lucide React icons, and CSS Modules.
 
 ## Install
 
@@ -22,8 +22,10 @@ npm install react react-dom @radix-ui/themes lucide-react
 
 ```tsx
 import { Button, Badge, Callout } from "@swedev/ui";
+import { Save } from "lucide-react";
 import { Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
+import "@swedev/ui/styles.css";
 
 function App() {
   return (
@@ -67,12 +69,14 @@ Components accept `semantic` instead of `color` for consistent meaning across th
 | TextArea | Radix TextArea | yes |
 | TextField | Radix TextField | yes |
 | ToggleButton | Radix SegmentedControl | - |
+| Breadcrumbs | Custom | - |
+| Modal | Radix Dialog | - |
 
 ## Storybook
 
 ```bash
 npm run dev       # Start Storybook on port 6006
-npm run build     # Build package (tsup + tailwind)
+npm run build     # Build package (Vite)
 ```
 
 ## Theming

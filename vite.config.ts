@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 import dts from "vite-plugin-dts";
-import { resolve } from "path";
+import { basename, resolve } from "path";
 
 export default defineConfig({
   plugins: [
@@ -10,7 +10,12 @@ export default defineConfig({
   ],
   css: {
     modules: {
-      generateScopedName: "[local]",
+      generateScopedName(name, filename) {
+        const component = basename(filename, ".module.css");
+        if (name === component) return component;
+        const divider = /^[a-z]/.test(name) ? "-" : "_";
+        return `${component}${divider}${name}`;
+      },
     },
   },
   build: {

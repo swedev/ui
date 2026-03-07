@@ -4,7 +4,7 @@
 
 Delat, theme-bart komponentbibliotek for swedev-projekt (Styrla, OpenVera, Timla).
 
-Byggt pa Radix Themes med semantiska wrappers, Lucide React-ikoner och Tailwind CSS.
+Byggt pa Radix Themes med semantiska wrappers, Lucide React-ikoner och CSS Modules.
 
 ## Installera
 
@@ -22,8 +22,10 @@ npm install react react-dom @radix-ui/themes lucide-react
 
 ```tsx
 import { Button, Badge, Callout } from "@swedev/ui";
+import { Save } from "lucide-react";
 import { Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
+import "@swedev/ui/styles.css";
 
 function App() {
   return (
@@ -67,12 +69,14 @@ Komponenter tar `semantic` istallet for `color` for konsekvent betydelse i hela 
 | TextArea | Radix TextArea | ja |
 | TextField | Radix TextField | ja |
 | ToggleButton | Radix SegmentedControl | - |
+| Breadcrumbs | Custom | - |
+| Modal | Radix Dialog | - |
 
 ## Storybook
 
 ```bash
 npm run dev       # Starta Storybook pa port 6006
-npm run build     # Bygg paketet (tsup + tailwind)
+npm run build     # Bygg paketet (Vite)
 ```
 
 ## Theming

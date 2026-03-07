@@ -49,7 +49,8 @@ Callout auto-selects a default icon based on `semantic` via `getDefaultIconForSe
 
 ## Build
 
-- **tsup** — ESM + CJS + .d.ts, externals: react, react-dom, @radix-ui/themes, lucide-react
+- **Vite** (library mode) — ESM + CJS + .d.ts via vite-plugin-dts, externals: react, react-dom, @radix-ui/themes, lucide-react
+- **CSS Modules** with `@layer swedev` cascade and wingframe-style scoped names (`Component_ChildClass`, `Component-modifier`)
 - **Storybook 10** — Vite-based, stories colocated with components
 
 ## Dependencies
@@ -64,7 +65,7 @@ All UI deps are **peer dependencies** — the consuming project provides them:
 ## Commands
 
 ```bash
-npm run build          # tsup → dist/
+npm run build          # vite → dist/
 npm run dev            # Storybook on port 6006
 npm run build-storybook # Static Storybook build
 npm test               # vitest
