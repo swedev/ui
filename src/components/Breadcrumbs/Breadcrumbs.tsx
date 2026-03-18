@@ -7,6 +7,7 @@ export interface BreadcrumbItem {
   href?: string;
   text: string;
   icon?: LucideIcon;
+  disabled?: boolean;
 }
 
 export interface BreadcrumbsProps extends React.ComponentPropsWithRef<"div"> {
@@ -27,9 +28,9 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
     <div className={cn(s.Breadcrumbs, className)} {...rest}>
       <ul>
         {children}
-        {items?.map(({ href, text, icon: Icon }, i) => (
+        {items?.map(({ href, text, icon: Icon, disabled }, i) => (
           <li key={i}>
-            {href ? (
+            {href && !disabled ? (
               <a href={href} onClick={onItemClick} className="flex items-center gap-1.5">
                 {Icon && <Icon size={14} />}
                 {text}

@@ -7,6 +7,7 @@ import { cn } from "../../utils";
 import s from "./Badge.module.css";
 
 type BaseBadgeProps = Omit<RadixBadgeProps, "color"> & {
+  text?: string | number;
   children?: React.ReactNode;
 };
 
@@ -15,6 +16,7 @@ export type BadgeProps = BaseBadgeProps & (SemanticProps | ColorProps);
 export const Badge: React.FC<BadgeProps> = ({
   semantic,
   color,
+  text,
   className,
   children,
   ...rest
@@ -23,7 +25,7 @@ export const Badge: React.FC<BadgeProps> = ({
 
   return (
     <RadixBadge color={finalColor} className={cn(s.Badge, className)} {...rest}>
-      {children}
+      {children || text}
     </RadixBadge>
   );
 };

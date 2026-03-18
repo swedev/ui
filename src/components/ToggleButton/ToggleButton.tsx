@@ -27,8 +27,8 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
   const mergedClassName = cn(
     s.ToggleButton,
     className,
-    active && activeProps?.className,
     active && s.active,
+    active && activeProps?.className,
   ) || undefined;
 
   return (

@@ -25,7 +25,7 @@ export const LabelledCheckbox: React.FC<LabelledCheckboxProps> = (props) => {
       className={cn(s.LabelledCheckbox, semantic && s.semantic, labelProps?.className)}
     >
       <Checkbox {...checkboxProps} />
-      {label}
+      {label && <span>{label}</span>}
       {children}
     </Text>
   );

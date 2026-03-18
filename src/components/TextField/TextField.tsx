@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { TextField as RadixTextField } from "@radix-ui/themes";
 import { getRadixColorForSemantic } from "../../theme/colors";
 import type { ColorProps, SemanticProps } from "../../theme/types";
@@ -20,15 +20,35 @@ type BaseRootProps = Omit<React.ComponentProps<typeof RadixTextField.Root>, "col
 
 export type TextFieldRootProps = BaseRootProps & (SemanticProps | ColorProps);
 
+/**
+ * TextField wrapper with sensible defaults.
+ * Uses local state to prevent cursor jumping on controlled inputs
+ * caused by async update cycles.
+ */
 const Root = React.forwardRef<HTMLInputElement, TextFieldRootProps>(({
   semantic,
   color,
+  value: propValue,
   className,
+  onChange,
   ...props
 }, ref) => {
   if (semantic) {
     color = getRadixColorForSemantic(semantic);
   }
+
+  const [localValue, setLocalValue] = useState(propValue ?? "");
+
+  useEffect(() => {
+    if (propValue !== undefined) {
+      setLocalValue(propValue);
+    }
+  }, [propValue]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalValue(e.target.value);
+    onChange?.(e);
+  };
 
   return (
     <TextFieldContext.Provider value={{ color }}>
@@ -36,6 +56,8 @@ const Root = React.forwardRef<HTMLInputElement, TextFieldRootProps>(({
         autoComplete="off"
         color={color}
         ref={ref}
+        value={localValue}
+        onChange={handleChange}
         className={cn(s.Root, semantic && s.semantic, className)}
         {...props}
       />

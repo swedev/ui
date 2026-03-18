@@ -40,12 +40,9 @@ export const Button: React.FC<ButtonProps> = ({
   const renderIcon = () => {
     if (!icon) return null;
 
-    // If icon is a Lucide component (forwardRef object or function), render it
-    // Otherwise treat it as a ReactNode
-    const isComponent = typeof icon === "function" || (typeof icon === "object" && icon !== null && "$$typeof" in icon && "render" in icon);
-    const iconElement = isComponent
-      ? React.createElement(icon as LucideIcon, { size: 16 })
-      : icon;
+    const iconElement = React.isValidElement(icon)
+      ? icon
+      : React.createElement(icon as LucideIcon, { size: 16 });
 
     if (loading) {
       return (

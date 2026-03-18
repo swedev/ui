@@ -27,24 +27,14 @@ type BaseCalloutProps = Omit<RadixCalloutRootProps, "color"> & {
 
 export type CalloutProps = BaseCalloutProps & (SemanticProps | ColorProps);
 
-const defaultIcons: Partial<Record<Color, ReactNode>> = {
-  gray: <Info size={18} />,
-  blue: <Info size={18} />,
-  purple: <Info size={18} />,
-  sky: <Info size={18} />,
-  jade: <CheckCircle size={18} />,
-  amber: <AlertTriangle size={18} />,
-  red: <XCircle size={18} />,
-};
-
-const defaultIconsVertical: Partial<Record<Color, ReactNode>> = {
-  gray: <Info size={24} />,
-  blue: <Info size={24} />,
-  purple: <Info size={24} />,
-  sky: <Info size={24} />,
-  jade: <CheckCircle size={24} />,
-  amber: <AlertTriangle size={24} />,
-  red: <XCircle size={24} />,
+const defaultIconForColor: Partial<Record<Color, React.FC<{ size: number }>>> = {
+  gray: Info,
+  blue: Info,
+  purple: Info,
+  sky: Info,
+  jade: CheckCircle,
+  amber: AlertTriangle,
+  red: XCircle,
 };
 
 export const Callout: React.FC<CalloutProps> = ({
@@ -72,9 +62,9 @@ export const Callout: React.FC<CalloutProps> = ({
   }
 
   const isVertical = layout === "vertical";
-  const iconMap = isVertical ? defaultIconsVertical : defaultIcons;
-  const defaultIcon = iconMap[finalColor] || iconMap.blue;
-  const resolvedIcon = icon === null ? null : icon ?? defaultIcon;
+  const iconSize = isVertical ? 24 : 18;
+  const DefaultIcon = defaultIconForColor[finalColor] || Info;
+  const resolvedIcon = icon === null ? null : icon ?? <DefaultIcon size={iconSize} />;
 
   const handleDismiss = () => {
     setVisible(false);
@@ -96,10 +86,10 @@ export const Callout: React.FC<CalloutProps> = ({
 
       <div className={cn(s.Content, isVertical && s.vertical)}>
         {title && <h5 className={s.Title}>{title}</h5>}
-        {(children || message) && <div>{children || message}</div>}
+        {message && <div className={s.Message}>{message}</div>}
+        {children}
+        {actions && <div className={s.Actions}>{actions}</div>}
       </div>
-
-      {actions && <div>{actions}</div>}
 
       {dismissible && (
         <div
