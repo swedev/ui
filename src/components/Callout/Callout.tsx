@@ -56,14 +56,14 @@ export const Callout: React.FC<CalloutProps> = ({
 
   if (!visible) return null;
 
-  let finalColor: RadixColor = color || getRadixColorForSemantic("neutral");
+  let finalColor: RadixColor | undefined = color || getRadixColorForSemantic("neutral");
   if (semantic) {
     finalColor = getRadixColorForSemantic(semantic);
   }
 
   const isVertical = layout === "vertical";
   const iconSize = isVertical ? 24 : 18;
-  const DefaultIcon = defaultIconForColor[finalColor] || Info;
+  const DefaultIcon = (finalColor && defaultIconForColor[finalColor]) || Info;
   const resolvedIcon = icon === null ? null : icon ?? <DefaultIcon size={iconSize} />;
 
   const handleDismiss = () => {

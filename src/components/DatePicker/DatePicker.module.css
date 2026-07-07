@@ -17,3 +17,16 @@
     }
   }
 }
+
+/* Day-picker theming: follow the Radix theme accent instead of
+ * react-day-picker's hardcoded blue. Kept outside @layer swedev because
+ * rdp's own stylesheet is unlayered (unlayered beats layered), and scoped
+ * via .PopoverContent rather than .DatePicker because Popover.Content
+ * portals out of the wrapper element. */
+.PopoverContent :global(.rdp-root) {
+  --rdp-accent-color: var(--accent-9);
+  --rdp-accent-background-color: var(--accent-3);
+  --rdp-today-color: var(--accent-11);
+  --rdp-range_start-color: var(--accent-contrast);
+  --rdp-range_end-color: var(--accent-contrast);
+}

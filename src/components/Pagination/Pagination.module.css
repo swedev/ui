@@ -22,7 +22,7 @@
     }
 
     .Ellipsis {
-      @apply px-2 text-gray-400 select-none;
+      @apply px-2 text-(--gray-9) select-none;
     }
   }
 }

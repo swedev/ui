@@ -1,7 +1,11 @@
 import type { RadixColor, Semantic } from "./types";
 
-const semanticColorMap: Record<Semantic, RadixColor> = {
-  action: "blue",
+/** `action` maps to `undefined` so components inherit the Radix
+ * `<Theme accentColor>` — action is the brand-accent semantic and must
+ * follow per-deployment branding. Status semantics keep fixed scales;
+ * consumers rebrand those at the token level. */
+const semanticColorMap: Record<Semantic, RadixColor | undefined> = {
+  action: undefined,
   destructive: "red",
   neutral: "gray",
   info: "sky",
@@ -15,6 +19,6 @@ const semanticColorMap: Record<Semantic, RadixColor> = {
   invalid: "red",
 };
 
-export function getRadixColorForSemantic(semantic: Semantic): RadixColor {
+export function getRadixColorForSemantic(semantic: Semantic): RadixColor | undefined {
   return semanticColorMap[semantic];
 }
