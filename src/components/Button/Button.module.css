@@ -1,18 +1,30 @@
 @reference "tailwindcss";
 
-@layer swedev {
-  .Button {
-    @apply h-auto;
-    padding: calc(var(--space-1) * 1.5) calc(var(--space-1) * 2.5);
-    gap: calc(var(--space-1) * 1.5);
+/* Unlayered on purpose: Radix's stylesheet is unlayered and unlayered CSS
+ * always beats @layer swedev, so box rules that compete with Radix's own
+ * button padding/height/margins must live outside the layer. Wins by the
+ * documented import order (Radix styles before @swedev/ui styles). */
+.Button {
+  /* Consumer-overridable box tokens. Ghost buttons get the SAME box as
+   * other variants: Radix gives ghosts their own tighter padding via
+   * --button-ghost-padding-*, which makes the hover surface look cramped
+   * and inconsistent — alias those to the shared padding tokens. */
+  --swedev-button-padding-y: calc(var(--space-1) * 1.5);
+  --swedev-button-padding-x: calc(var(--space-1) * 2.5);
+  --button-ghost-padding-y: var(--swedev-button-padding-y);
+  --button-ghost-padding-x: var(--swedev-button-padding-x);
 
-    &:global(.rt-variant-ghost) {
-      @apply m-0;
-    }
+  height: auto;
+  padding: var(--swedev-button-padding-y) var(--swedev-button-padding-x);
+  gap: calc(var(--space-1) * 1.5);
 
-    &:global(.rt-r-size-3),
-    &:global(.rt-r-size-4) {
-      @apply px-3 py-1;
-    }
+  &:global(.rt-variant-ghost) {
+    margin: 0;
+  }
+
+  &:global(.rt-r-size-3),
+  &:global(.rt-r-size-4) {
+    --swedev-button-padding-y: calc(var(--spacing) * 1);
+    --swedev-button-padding-x: calc(var(--spacing) * 3);
   }
 }

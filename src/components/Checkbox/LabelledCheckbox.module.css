@@ -2,7 +2,10 @@
 
 @layer swedev {
   .LabelledCheckbox {
-    @apply flex gap-2 font-normal leading-4;
+    /* items-start + box height of one text line (1lh, unlayered rule
+     * below): the box centers against the FIRST line, so multiline labels
+     * wrap below it instead of the box floating between lines. */
+    @apply flex items-start gap-2 font-normal;
 
     &.semantic {
       @apply text-(--accent-9);
@@ -12,4 +15,12 @@
       }
     }
   }
+}
+
+/* Unlayered: competes with Radix's own height rule on the checkbox root
+ * (Radix CSS is unlayered and beats @layer swedev). 1lh = one line of the
+ * label's text, so Radix's internal centering aligns the box to the first
+ * line. */
+.LabelledCheckbox :global(.rt-BaseCheckboxRoot) {
+  height: 1lh;
 }

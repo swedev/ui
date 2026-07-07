@@ -2,19 +2,22 @@
 
 @layer swedev {
   .Content {
-    @apply bg-white rounded-lg shadow-xl p-0;
+    @apply shadow-xl p-0;
+    background-color: var(--color-panel-solid, #fff);
+    border-radius: var(--radius-5);
   }
 
   .Header {
-    @apply relative p-4;
-    background-color: var(--gray-3);
+    /* No tinted band — the panel carries the surface, the title the
+     * hierarchy. */
+    @apply relative bg-transparent px-6 pt-6 pb-1;
   }
 
   .Title {
     @apply flex items-center gap-[0.4em];
 
     &:global(.rt-Heading) {
-      @apply text-2xl font-semibold;
+      @apply text-lg font-bold;
     }
   }
 
@@ -27,19 +30,18 @@
   }
 
   .CloseButton {
-    @apply absolute top-3 right-3 flex items-center justify-center w-7 h-7
+    @apply absolute top-5 right-5 flex items-center justify-center w-7 h-7
            rounded cursor-pointer border-0 bg-transparent
            opacity-60 hover:opacity-100 transition-opacity;
   }
 
   .Body {
-    @apply block;
-    padding: var(--dialog-content-padding);
+    @apply block px-6 py-4;
   }
 
   .Footer {
-    @apply flex p-4 items-center justify-between gap-2;
-    background-color: var(--gray-3);
+    @apply flex px-6 py-4 items-center justify-end gap-2 bg-transparent;
+    border-top: 1px solid var(--gray-4);
   }
 
   .ConfirmContent {
