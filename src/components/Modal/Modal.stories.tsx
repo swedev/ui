@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { AlertTriangle, Info, Trash2 } from "lucide-react";
+import { AlertTriangle, Info } from "lucide-react";
 import { Button } from "../Button";
 import { Modal } from "./Modal";
 import { ConfirmModal } from "./ConfirmModal";

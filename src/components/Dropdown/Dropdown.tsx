@@ -77,7 +77,7 @@ const ActionDropdown: React.FC<ActionDropdownProps> = ({
 
   return (
     <DropdownMenu.Root modal={false}>
-      {/* @ts-ignore - asChild works at runtime but missing from Radix types */}
+      {/* @ts-expect-error - asChild works at runtime but missing from Radix types */}
       <DropdownMenu.Trigger asChild>
         {children}
       </DropdownMenu.Trigger>
