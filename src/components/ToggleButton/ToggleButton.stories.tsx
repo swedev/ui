@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { List, LayoutGrid, Table2, Clock } from "lucide-react";
+import { List, LayoutGrid, Table2 } from "lucide-react";
 import { ToggleButton } from "./ToggleButton";
 
 const meta: Meta<typeof ToggleButton> = {

@@ -128,7 +128,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
           onFocus={() => { if (!disabled) setShowPicker(true); }}
         >
           <TextField.Slot side="right" className={s.Slot}>
-            {/* @ts-ignore - asChild works at runtime but missing from Radix types */}
+            {/* @ts-expect-error - asChild works at runtime but missing from Radix types */}
             <Popover.Trigger asChild>
               <Button
                 icon={Calendar}

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { TextField as RadixTextField } from "@radix-ui/themes";
 import { getRadixColorForSemantic } from "../../theme/colors";
 import type { ColorProps, SemanticProps } from "../../theme/types";
