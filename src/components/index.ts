@@ -28,11 +28,17 @@ export type { PaginationNavProps } from "./Pagination";
 export { ProgressBar } from "./ProgressBar";
 export type { ProgressBarProps } from "./ProgressBar";
 
+export { SegmentedControl } from "./SegmentedControl";
+export type { SegmentedControlProps, SegmentedControlItem } from "./SegmentedControl";
+
 export { Select } from "./Select";
 export type { SelectRootProps, SelectTriggerProps, SelectContentProps, SelectItemProps } from "./Select";
 
 export { Slider } from "./Slider";
 export type { SliderProps } from "./Slider";
+
+export { RangeSlider, minStepsForGap } from "./RangeSlider";
+export type { RangeSliderProps } from "./RangeSlider";
 
 export { Switch } from "./Switch";
 export type { SwitchProps } from "./Switch";

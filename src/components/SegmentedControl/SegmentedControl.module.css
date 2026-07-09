@@ -1,0 +1,37 @@
+@reference "tailwindcss";
+
+@layer swedev {
+  /* Warm "chip" container with a raised panel active pill. Everything reads
+   * from Radix vars (--gray-*, --color-panel-solid) so it follows the
+   * consuming <Theme>. Sits in @layer swedev, which wins over @layer radix. */
+  .SegmentedControl {
+    --segmented-control-border-radius: 14px;
+    border-radius: 14px;
+    background-color: var(--gray-3);
+
+    /* The sliding active pill: inset from the item so the chip shows around it */
+    :global(.rt-SegmentedControlIndicator::before) {
+      inset: 4px;
+      border-radius: 10px;
+      background-color: var(--color-panel-solid, white);
+      box-shadow: 0 1px 3px rgb(90 60 20 / 0.12);
+    }
+
+    /* Drop Radix's default 1px surface ring on the indicator — clean pill */
+    :global(.rt-SegmentedControlItem:not([disabled]) ~ .rt-SegmentedControlIndicator) {
+      box-shadow: none;
+    }
+  }
+
+  .Item {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-weight: 700;
+  }
+
+  .Count {
+    opacity: 0.65;
+    font-variant-numeric: tabular-nums;
+  }
+}
