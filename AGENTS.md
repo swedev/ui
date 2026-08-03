@@ -28,6 +28,16 @@ The `semantic` value is mapped to a Radix color via `getRadixColorForSemantic()`
 - **Compound component** for multi-part components (Table, Select, Dropdown) — re-export Radix sub-components as namespace
 - **Custom** for components without a Radix equivalent (DatePicker, Pagination)
 
+### Select value semantics
+
+`Select.Root` passes `value`/`onValueChange` straight through to Radix — no sentinel mapping, no clear machinery:
+
+- `value=""` — controlled, nothing selected; the trigger's `placeholder` shows
+- omitted `value` — uncontrolled (use `defaultValue` for an initial selection)
+- clear a controlled select with `""`, never `undefined` (that is a controlled → uncontrolled transition)
+- `Select.Item value=""` is invalid — Radix throws
+- an explicit "None" option is a consumer-side sentinel value mapped to/from `""` in **both** the `value` prop and the callback (see the `NoneOption` story)
+
 ### Icons
 
 Lucide React. Components that take icons use the `LucideIcon` type (component reference, not JSX):
