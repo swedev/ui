@@ -1,18 +1,13 @@
-import React, { createContext, useContext, useRef } from "react";
+import React, { createContext, useContext } from "react";
 import { Select as RadixSelect } from "@radix-ui/themes";
 import { getRadixColorForSemantic } from "../../theme/colors";
 import type { ColorProps, SemanticProps } from "../../theme/types";
 import { cn } from "../../utils";
 import s from "./Select.module.css";
 
-// Radix Select doesn't allow empty string values, so we use a sentinel
-const EMPTY_VALUE_SENTINEL = "__empty__";
-
-// Context to share color and clear function
+// Context to share the resolved color with Trigger and Content
 interface SelectContextValue {
-  triggerRef: React.RefObject<HTMLButtonElement | null>;
   color?: React.ComponentProps<typeof RadixSelect.Trigger>["color"];
-  clearValue?: () => void;
 }
 
 const SelectContext = createContext<SelectContextValue | null>(null);
@@ -21,53 +16,41 @@ const SelectContext = createContext<SelectContextValue | null>(null);
 
 type RadixSelectRootProps = React.ComponentProps<typeof RadixSelect.Root>;
 
-type BaseRootProps = Omit<RadixSelectRootProps, "value" | "onValueChange"> & {
-  value?: string;
-  onValueChange?: (value: string | undefined) => void;
-};
-
-export type SelectRootProps = BaseRootProps & (SemanticProps | ColorProps);
+/**
+ * Props for `Select.Root`. `value` and `onValueChange` pass straight through to
+ * Radix — this component adds no value mapping of its own.
+ *
+ * Value semantics:
+ * - `value=""` — **controlled** with nothing selected. The `Trigger`'s
+ *   `placeholder` is shown. This is Radix's documented way to represent
+ *   "no selection" in a controlled select.
+ * - Omitted `value` (or `value={undefined}`) — **uncontrolled**. Use
+ *   `defaultValue` to set an initial selection.
+ * - Controlled consumers should clear with `""`, never `undefined`: going from
+ *   a string to `undefined` on a mounted select is a controlled → uncontrolled
+ *   transition that React and Radix warn about.
+ *
+ * `Select.Item value=""` is invalid — Radix throws, since an empty item value
+ * would be indistinguishable from "no selection". To offer an explicit "None"
+ * choice, pick a sentinel value in the consumer (e.g. `"none"`) and map it
+ * to/from `""` in **both** the `value` prop and the `onValueChange` callback;
+ * see the `NoneOption` story.
+ */
+export type SelectRootProps = RadixSelectRootProps & (SemanticProps | ColorProps);
 
 const Root: React.FC<SelectRootProps> = ({
   semantic,
   color,
-  value,
-  onValueChange,
   children,
   ...rootProps
 }) => {
-  const triggerRef = useRef<HTMLButtonElement>(null);
-
   if (semantic) {
     color = getRadixColorForSemantic(semantic);
   }
 
-  // Convert empty string to sentinel for Radix
-  const radixValue = value === "" ? EMPTY_VALUE_SENTINEL : value;
-
-  // Convert sentinel back to empty string for callback
-  const handleValueChange = (newValue: string) => {
-    const externalValue = newValue === EMPTY_VALUE_SENTINEL ? "" : newValue;
-    onValueChange?.(externalValue);
-  };
-
-  const clearValue = () => {
-    onValueChange?.(undefined);
-  };
-
-  // Key forces remount when value becomes undefined (Radix doesn't support unselecting)
-  const selectKey = value === undefined ? "cleared" : "selected";
-
   return (
-    <SelectContext.Provider value={{ triggerRef, color, clearValue }}>
-      <RadixSelect.Root
-        key={selectKey}
-        value={radixValue}
-        onValueChange={handleValueChange}
-        {...rootProps}
-      >
-        {children}
-      </RadixSelect.Root>
+    <SelectContext.Provider value={{ color }}>
+      <RadixSelect.Root {...rootProps}>{children}</RadixSelect.Root>
     </SelectContext.Provider>
   );
 };
@@ -86,7 +69,6 @@ const Trigger = React.forwardRef<HTMLButtonElement, SelectTriggerProps>(({
   color,
   className,
   variant,
-  onKeyDown,
   ...props
 }, forwardedRef) => {
   const context = useContext(SelectContext);
@@ -101,50 +83,21 @@ const Trigger = React.forwardRef<HTMLButtonElement, SelectTriggerProps>(({
   const isSolid = variant === "solid";
   const radixVariant: RadixVariant = isSolid ? "surface" : variant;
 
-  // Combine forwarded ref with context ref
-  const setRefs = (el: HTMLButtonElement | null) => {
-    if (context?.triggerRef) {
-      (context.triggerRef as React.MutableRefObject<HTMLButtonElement | null>).current = el;
-    }
-    if (typeof forwardedRef === "function") {
-      forwardedRef(el);
-    } else if (forwardedRef) {
-      forwardedRef.current = el;
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (e.key === "Backspace" || e.key === "Delete") {
-      context?.clearValue?.();
-    }
-    onKeyDown?.(e);
-  };
-
   return (
     <RadixSelect.Trigger
-      ref={setRefs}
+      ref={forwardedRef}
       className={cn(s.Trigger, isSolid && s.solid, isSolid && "rt-variant-solid", semantic && s.semantic, className)}
       color={resolvedColor}
       variant={radixVariant}
-      onKeyDown={handleKeyDown}
       {...props}
     />
   );
 });
 Trigger.displayName = "Select.Trigger";
 
-// --- Item (with sentinel handling) ---
+// --- Item ---
 
-type RadixItemProps = React.ComponentProps<typeof RadixSelect.Item>;
-
-export interface SelectItemProps extends Omit<RadixItemProps, "value"> {
-  value: string;
-}
-
-const Item: React.FC<SelectItemProps> = ({ value, ...props }) => {
-  const radixValue = value === "" ? EMPTY_VALUE_SENTINEL : value;
-  return <RadixSelect.Item value={radixValue} {...props} />;
-};
+export type SelectItemProps = React.ComponentProps<typeof RadixSelect.Item>;
 
 // --- Content ---
 
@@ -174,7 +127,7 @@ export const Select = {
   Root,
   Trigger,
   Content,
-  Item,
+  Item: RadixSelect.Item,
   Group: RadixSelect.Group,
   Label: RadixSelect.Label,
   Separator: RadixSelect.Separator,

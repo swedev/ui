@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Button } from "../Button";
 import { Select } from "./Select";
 
 const meta: Meta = {
@@ -59,12 +60,18 @@ export const WithGroups: Story = {
   ),
 };
 
-export const Clearable: Story = {
+/**
+ * Controlled select where `""` means "nothing selected". `value=""` passes
+ * straight through to Radix, so the trigger's placeholder is shown — clearing a
+ * controlled select is done with `""`, never `undefined` (which would turn the
+ * select uncontrolled).
+ */
+export const ControlledWithPlaceholder: Story = {
   render: () => {
-    const ClearableDemo = () => {
-      const [value, setValue] = useState<string | undefined>("kassor");
+    const ControlledDemo = () => {
+      const [value, setValue] = useState("");
       return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col items-start gap-2">
           <Select.Root value={value} onValueChange={setValue}>
             <Select.Trigger placeholder="Select a role..." />
             <Select.Content>
@@ -74,12 +81,52 @@ export const Clearable: Story = {
             </Select.Content>
           </Select.Root>
           <span className="text-sm text-[var(--gray-11)]">
-            Selected: {value ?? "(none)"} — Press Backspace to clear
+            Value: {value === "" ? '"" (placeholder shown)' : value}
+          </span>
+          <Button variant="soft" semantic="neutral" onClick={() => setValue("")}>
+            Reset
+          </Button>
+        </div>
+      );
+    };
+    return <ControlledDemo />;
+  },
+};
+
+/**
+ * An explicit "None" option is a consumer-side concern: `Select.Item value=""`
+ * is invalid (Radix throws), so pick a sentinel value and map it to/from `""`
+ * in **both** directions — the `value` prop and the `onValueChange` callback.
+ * Mapping only one direction would make "Ingen" snap back to the placeholder as
+ * soon as it is picked. The sentinel must not collide with a real domain value.
+ */
+export const NoneOption: Story = {
+  render: () => {
+    const NONE_VALUE = "none";
+    const NoneOptionDemo = () => {
+      const [value, setValue] = useState("");
+      return (
+        <div className="flex flex-col items-start gap-2">
+          <Select.Root
+            value={value === "" ? NONE_VALUE : value}
+            onValueChange={(next) => setValue(next === NONE_VALUE ? "" : next)}
+          >
+            <Select.Trigger placeholder="Select a role..." />
+            <Select.Content>
+              <Select.Item value={NONE_VALUE}>Ingen</Select.Item>
+              <Select.Separator />
+              <Select.Item value="ordforande">Ordförande</Select.Item>
+              <Select.Item value="kassor">Kassör</Select.Item>
+              <Select.Item value="sekreterare">Sekreterare</Select.Item>
+            </Select.Content>
+          </Select.Root>
+          <span className="text-sm text-[var(--gray-11)]">
+            Domain value: {value === "" ? '"" (none)' : value}
           </span>
         </div>
       );
     };
-    return <ClearableDemo />;
+    return <NoneOptionDemo />;
   },
 };
 
