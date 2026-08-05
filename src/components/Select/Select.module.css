@@ -1,33 +1,60 @@
 @reference "tailwindcss";
 
-@layer swedev {
-  .Trigger {
-    @apply h-auto;
-    padding: calc(var(--space-1) * 1.5) calc(var(--space-1) * 2.5);
-    gap: calc(var(--space-1) * 1.5);
+/* Unlayered on purpose: Radix's stylesheet is unlayered in consumer apps and
+ * unlayered CSS always beats @layer swedev, so every trigger rule that
+ * competes with Radix's own trigger skin (height, padding, variant surfaces)
+ * must live outside the layer — otherwise the trigger renders as bare Radix
+ * in consumers. Wins by the documented import order (Radix styles before
+ * @swedev/ui styles). Same fix as Button.module.css. */
+.Trigger {
+  @apply h-auto;
+  padding: calc(var(--space-1) * 1.5) calc(var(--space-1) * 2.5);
+  gap: calc(var(--space-1) * 1.5);
 
-    &:global(.rt-variant-ghost) {
-      @apply m-0;
-    }
+  /* Radix's `.rt-reset` puts `all: unset` on the trigger button, which as
+   * unlayered CSS silently beats consumer width utilities like `w-full`
+   * living in @layer utilities. Hand width back to the layered cascade so
+   * consumer utilities apply; with no width utility set this resolves to
+   * `auto`, as before. */
+  width: revert-layer;
 
-    &:global(.rt-r-size-3),
-    &:global(.rt-r-size-4) {
-      @apply px-3 py-1;
-    }
+  &:global(.rt-variant-ghost) {
+    @apply m-0;
+  }
 
-    &.solid {
-      @apply bg-(--accent-9) text-(--accent-1) border-(--accent-7) shadow-none;
+  &:global(.rt-r-size-3),
+  &:global(.rt-r-size-4) {
+    @apply px-3 py-1;
+  }
 
-      &:hover {
-        @apply bg-(--accent-10) border-(--accent-6);
-      }
-    }
+  /* TextField parity: an open select shows the same focus ring a focused
+   * TextField gets (Radix only rings the trigger on :focus-visible, so a
+   * pointer-opened select read as unfocused next to a ringed TextField). */
+  &[data-state="open"] {
+    outline: 2px solid var(--focus-8);
+    outline-offset: -1px;
+  }
 
-    &.semantic {
-      @apply inset-ring inset-ring-(--focus-8);
+  /* TextField parity: soften the chevron to the placeholder tone so it
+   * reads as a form-control affordance rather than content. */
+  &:global(.rt-variant-surface):not(:disabled) :global(.rt-SelectIcon) {
+    color: var(--gray-a10);
+  }
+
+  &.solid {
+    @apply bg-(--accent-9) text-(--accent-1) border-(--accent-7) shadow-none;
+
+    &:hover {
+      @apply bg-(--accent-10) border-(--accent-6);
     }
   }
 
+  &.semantic {
+    @apply inset-ring inset-ring-(--focus-8);
+  }
+}
+
+@layer swedev {
   /* Ensure Select dropdown appears above modal overlays */
   :global(.rt-SelectContent) {
     @apply z-50;

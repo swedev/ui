@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "../Button";
+import { TextField } from "../TextField";
 import { Select } from "./Select";
 
 const meta: Meta = {
@@ -128,6 +129,29 @@ export const NoneOption: Story = {
     };
     return <NoneOptionDemo />;
   },
+};
+
+/**
+ * Consumer width utilities (`w-full`, `w-64`, …) on the trigger are honored:
+ * the trigger hands `width` back to the layered cascade so utility classes
+ * win over Radix's unlayered `all: unset` reset. In a form column the trigger
+ * lines up with TextField, and an open select shows the same focus ring a
+ * focused TextField gets.
+ */
+export const FullWidthForm: Story = {
+  render: () => (
+    <div className="flex w-80 flex-col gap-2">
+      <TextField.Root placeholder="Namn" />
+      <Select.Root>
+        <Select.Trigger className="w-full" placeholder="Select a role..." />
+        <Select.Content>
+          <Select.Item value="ordforande">Ordförande</Select.Item>
+          <Select.Item value="kassor">Kassör</Select.Item>
+          <Select.Item value="sekreterare">Sekreterare</Select.Item>
+        </Select.Content>
+      </Select.Root>
+    </div>
+  ),
 };
 
 export const Sizes: Story = {

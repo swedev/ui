@@ -60,7 +60,7 @@ Callout auto-selects a default icon based on `semantic` via `getDefaultIconForSe
 ## Build
 
 - **Vite** (library mode) — ESM + CJS + .d.ts via vite-plugin-dts, externals: react, react-dom, @radix-ui/themes, lucide-react
-- **CSS Modules** with `@layer swedev` cascade and wingframe-style scoped names (`Component_ChildClass`, `Component-modifier`)
+- **CSS Modules** with `@layer swedev` cascade and wingframe-style scoped names (`Component_ChildClass`, `Component-modifier`). Rules that compete with Radix's own component styles must live **outside** the layer: consumers import Radix's stylesheet unlayered, and unlayered CSS beats `@layer swedev` regardless of specificity (see the comments in `Button.module.css` and `Select.module.css`)
 - **Storybook 10** — Vite-based, stories colocated with components
 
 ## Dependencies
