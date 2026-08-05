@@ -106,6 +106,37 @@ export const Sizes: Story = {
   ),
 };
 
+/**
+ * Disabled keeps a visible border and legible text (one contrast axis at a
+ * time) so it reads as "inactive" rather than "broken" — also on warm/tinted
+ * backgrounds like the paper swatch below.
+ */
+export const Disabled: Story = {
+  render: () => (
+    <div className="flex flex-col items-start gap-4">
+      <div className="flex gap-2 items-center">
+        <Button semantic="action" variant="solid" disabled>Solid</Button>
+        <Button semantic="action" variant="soft" disabled>Soft</Button>
+        <Button semantic="action" variant="surface" disabled>Surface</Button>
+        <Button semantic="action" variant="outline" disabled>Outline</Button>
+        <Button semantic="action" variant="ghost" disabled>Ghost</Button>
+        <Button semantic="action" variant="solid">Enabled</Button>
+      </div>
+      <div
+        className="flex gap-2 items-center rounded-lg p-4"
+        style={{ backgroundColor: "#fdf8ee" }}
+      >
+        <Button semantic="action" variant="solid" disabled>Solid</Button>
+        <Button semantic="action" variant="soft" disabled>Soft</Button>
+        <Button semantic="action" variant="surface" disabled>Surface</Button>
+        <Button semantic="action" variant="outline" disabled>Outline</Button>
+        <Button semantic="action" variant="ghost" disabled>Ghost</Button>
+        <Button semantic="action" variant="solid">Enabled</Button>
+      </div>
+    </div>
+  ),
+};
+
 export const AllSemantics: Story = {
   render: () => (
     <div className="flex flex-wrap gap-2">

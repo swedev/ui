@@ -27,4 +27,18 @@
     --swedev-button-padding-y: calc(var(--spacing) * 1);
     --swedev-button-padding-x: calc(var(--spacing) * 3);
   }
+
+  /* Deliberate disabled look: Radix drops both contrast axes at once
+   * (gray-a8 text on a gray-a3 slab, no border), which reads as broken on
+   * warm/tinted backgrounds. Keep the surface quiet but retain a visible
+   * border and legible text. Must also live outside the layer — Radix's
+   * per-variant disabled rules are unlayered in consumers. */
+  &:where(:disabled, [data-disabled]) {
+    color: var(--gray-a11);
+
+    &:where(:not(:global(.rt-variant-ghost))) {
+      background-color: var(--gray-a2);
+      box-shadow: inset 0 0 0 1px var(--gray-a6);
+    }
+  }
 }
