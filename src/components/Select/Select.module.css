@@ -2,30 +2,20 @@
 
 /* Unlayered on purpose: Radix's stylesheet is unlayered in consumer apps and
  * unlayered CSS always beats @layer swedev, so every trigger rule that
- * competes with Radix's own trigger skin (height, padding, variant surfaces)
- * must live outside the layer — otherwise the trigger renders as bare Radix
- * in consumers. Wins by the documented import order (Radix styles before
- * @swedev/ui styles). Same fix as Button.module.css. */
+ * competes with Radix's own trigger skin must live outside the layer —
+ * otherwise the trigger renders as bare Radix in consumers. Wins by the
+ * documented import order (Radix styles before @swedev/ui styles). Same fix
+ * as Button.module.css.
+ *
+ * Box/size chrome is deliberately NOT overridden — Radix's own trigger size
+ * scale (height, padding, gap, ghost box) applies, matching Button. */
 .Trigger {
-  @apply h-auto;
-  padding: calc(var(--space-1) * 1.5) calc(var(--space-1) * 2.5);
-  gap: calc(var(--space-1) * 1.5);
-
   /* Radix's `.rt-reset` puts `all: unset` on the trigger button, which as
    * unlayered CSS silently beats consumer width utilities like `w-full`
    * living in @layer utilities. Hand width back to the layered cascade so
    * consumer utilities apply; with no width utility set this resolves to
    * `auto`, as before. */
   width: revert-layer;
-
-  &:global(.rt-variant-ghost) {
-    @apply m-0;
-  }
-
-  &:global(.rt-r-size-3),
-  &:global(.rt-r-size-4) {
-    @apply px-3 py-1;
-  }
 
   /* TextField parity: an open select shows the same focus ring a focused
    * TextField gets (Radix only rings the trigger on :focus-visible, so a

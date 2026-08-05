@@ -1,38 +1,16 @@
-@reference "tailwindcss";
-
 /* Unlayered on purpose: Radix's stylesheet is unlayered and unlayered CSS
- * always beats @layer swedev, so box rules that compete with Radix's own
- * button padding/height/margins must live outside the layer. Wins by the
- * documented import order (Radix styles before @swedev/ui styles). */
+ * always beats @layer swedev, so rules that compete with Radix's own button
+ * styles must live outside the layer. Wins by the documented import order
+ * (Radix styles before @swedev/ui styles).
+ *
+ * Box/size chrome is deliberately NOT overridden — Radix's own size scale
+ * (height, padding, gap, ghost box) applies; consumers skin geometry with
+ * their own unlayered `.rt-Button` rules if they need to. */
 .Button {
-  /* Consumer-overridable box tokens. Ghost buttons get the SAME box as
-   * other variants: Radix gives ghosts their own tighter padding via
-   * --button-ghost-padding-*, which makes the hover surface look cramped
-   * and inconsistent — alias those to the shared padding tokens. */
-  --swedev-button-padding-y: calc(var(--space-1) * 1.5);
-  --swedev-button-padding-x: calc(var(--space-1) * 2.5);
-  --button-ghost-padding-y: var(--swedev-button-padding-y);
-  --button-ghost-padding-x: var(--swedev-button-padding-x);
-
-  height: auto;
-  padding: var(--swedev-button-padding-y) var(--swedev-button-padding-x);
-  gap: calc(var(--space-1) * 1.5);
-
-  &:global(.rt-variant-ghost) {
-    margin: 0;
-  }
-
-  &:global(.rt-r-size-3),
-  &:global(.rt-r-size-4) {
-    --swedev-button-padding-y: calc(var(--spacing) * 1);
-    --swedev-button-padding-x: calc(var(--spacing) * 3);
-  }
-
   /* Deliberate disabled look: Radix drops both contrast axes at once
    * (gray-a8 text on a gray-a3 slab, no border), which reads as broken on
    * warm/tinted backgrounds. Keep the surface quiet but retain a visible
-   * border and legible text. Must also live outside the layer — Radix's
-   * per-variant disabled rules are unlayered in consumers. */
+   * border and legible text. */
   &:where(:disabled, [data-disabled]) {
     color: var(--gray-a11);
 
