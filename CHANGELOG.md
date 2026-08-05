@@ -4,6 +4,19 @@ All notable changes to `@swedev/ui` are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) (0.x: breaking changes bump the minor version).
 
+## [0.7.0] — 2026-08-05
+
+### Fixed
+- **Select:** the trigger honors consumer width utilities (`w-full` etc.) — Radix's unlayered `all: unset` reset no longer silently defeats them; the trigger hands `width` back to the layered cascade with `width: revert-layer` (#7).
+- **Select:** the trigger skin now actually applies in consumer apps that import Radix's stylesheet unlayered — rules moved out of `@layer swedev`, same fix as Button in 0.4.0 (#7).
+
+### Added
+- **Select:** TextField-family polish — an open trigger shows the same `--focus-8` ring a focused TextField gets, and the chevron is softened to the placeholder tone (#7).
+- **Button:** deliberate disabled look that survives warm/tinted backgrounds — visible border (`gray-a6`), quiet surface (`gray-a2`) and legible text (`gray-a11`) instead of Radix dropping both contrast axes at once (#8).
+
+### Removed
+- **Breaking (Button/Select):** the compact box chrome — Radix's own size scale (height, padding, gap, ghost box) now applies to Button and `Select.Trigger`. The old chrome flattened the scale (`size="3"` rendered at the same 32px height as `size="2"`). The consumer-overridable `--swedev-button-padding-x/y` tokens from 0.4.0 are gone; consumers own button geometry via their own unlayered `.rt-Button` rules.
+
 ## [0.6.0] — 2026-08-03
 
 ### Changed
@@ -68,6 +81,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 - First npm publish: Radix Themes wrappers with semantic props, Lucide React icons, CSS modules with `@layer` cascade, Vite library build, and Storybook. Components: Badge, Breadcrumbs, Button, Callout, Checkbox, DatePicker, Dropdown, Pagination, ProgressBar, Select, Slider, Switch, Table, TextArea, TextField, ToggleButton.
 
+[0.7.0]: https://github.com/swedev/ui/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/swedev/ui/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/swedev/ui/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/swedev/ui/compare/v0.3.0...v0.4.0
